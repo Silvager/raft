@@ -1,0 +1,4 @@
+name: raft
+version: '1.0-SNAPSHOT'
+main: com.silvager.raft.Raft
+api-version: '1.21'
