@@ -1,18 +1,21 @@
 TODO:
-- Make it easier to hook items with rod
-
+- Make it so u can get ender eyes and portal etc and beat the game... Maybe a water end fight?
+- Better stuff to resume and start raft etc.
+- Ondisable if the tsunami is running, break the water
+- Give obby to the players sometimes
+- Glass around end crystals
+Best items:
+- Lava bucket
 Event ideas:
-- Tsunami (water goes over and then goes away
-- Creepers spawn down the length of the water and flow down
-- A few pillagers in boats spawn in the middle and flow down
-- Drowned (who dont get pushed by current) spawned right under the raft and attack from below
+- Get an f in the chat for a diamond
+- Spawn 3x3 of sand above someones head
+- Wish: someone gets to type one item in chat and if they spell it correctly they get one
+
+
+
 - Lightning storm (stormy weather and then lightning- but the lightning tracks where players were a few seconds ago and strikes there)
-- Current change direction IF you want (might be kinda complicated
-- Drop lit tnt on the boat
 - A boat and chest spawns with a message in it about a castaway
 - A ton of one random mob spawn and go down
-- Skeleton in boat spawns who has a punch bow
 - Hunger event
 - A mooshroom spawns underwater and it floats down (players are alerted but its really hard to save)
 - randomly give everyone speed 50 for a few seconds
-- for like 10 secs, if you pick up an item you explode (tells you before)

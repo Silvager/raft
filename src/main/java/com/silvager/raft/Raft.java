@@ -1,5 +1,7 @@
 package com.silvager.raft;
 
+import com.silvager.raft.events.AmongUsEvent;
+import com.silvager.raft.events.SharkEvent;
 import io.papermc.paper.event.entity.EntityPushedByEntityAttackEvent;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
@@ -29,7 +31,11 @@ public final class Raft extends JavaPlugin {
         //Events need to be initialized before commands
         RaftEvents.initializeEvents();
         RaftCommands.registerCommands();
-
+        AmongUsEvent.preloadSussySong();
+        SharkEvent.preloadSkibidiSong();
+        GameManager.setupWorlds();
+        PlayerJoining.setupPlayerJoining();
+        Raft.registerListener(new PlayerJoining());
     }
     public static Raft getInstance() {
         return Raft.instance;
@@ -39,6 +45,8 @@ public final class Raft extends JavaPlugin {
     }
     @Override
     public void onDisable() {
-        // Plugin shutdown logic
+        if (GameManager.getIsRunning()) {
+            GameManager.stopSystems();
+        }
     }
 }

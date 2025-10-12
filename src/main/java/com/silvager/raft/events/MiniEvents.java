@@ -94,7 +94,7 @@ public class MiniEvents {
             "New Mechs album just dropped, CLICK HERE!",
             "Click here for EXCLUSIVE interview with God"
     };
-    private static final String[] links = {"https://www.roblox.com/discover/?Keyword=skibidi%20toilet",
+    private static final String[] links = {"https://www.google.com/search?q=how+to+tell+my+parents+i+think+im+straight&sei=pnTiaKGEAb__ptQPvvXuuQo",
             "https://media.istockphoto.com/id/501027387/photo/not-there-yet.jpg?s=1024x1024&w=is&k=20&c=7HxKHQgqgSJA-Uypzl3OSMtSQ1ipw_csPM6Ao4VVwUQ=",
             "https://youtu.be/JrjL82ZBeQ0?si=nuQKV87exI2LX5GZ",
             "https://youtu.be/dQw4w9WgXcQ?si=D0_zusIgUTjHVqMT"

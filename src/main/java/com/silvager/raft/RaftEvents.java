@@ -5,9 +5,9 @@ import com.silvager.raft.events.*;
 import java.util.*;
 
 public class RaftEvents {
-    private static final long GRACE_PERIOD = 20*10L;
-    private static final long MIN_DELAY = 20*10L;
-    private static final long MAX_DELAY = 20*30L;
+    private static final long GRACE_PERIOD = 20*60L;
+    private static final long MIN_DELAY = 20*30L;
+    private static final long MAX_DELAY = 20*80L;
     private static final HashMap<String, Runnable> eventsMap = new HashMap<>();
     private static final ArrayList<Runnable> eventsLeftToRun = new ArrayList<>();
     public static void initializeEvents() {
@@ -20,6 +20,8 @@ public class RaftEvents {
         eventsMap.put("fireball", FireballEvent::startFireballEvent);
         eventsMap.put("castaway", MiniEvents::startCastawayEvent);
         eventsMap.put("chatTroll", MiniEvents::chatTrollEvent);
+        eventsMap.put("amongUs", AmongUsEvent::startAmongUs);
+        eventsMap.put("armorKit", ArmorKitEvent::startArmorKitEvent);
 
 
         refillEventsLeftToRun();

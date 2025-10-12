@@ -8,6 +8,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Random;
 
 public class OceanWorldGen extends ChunkGenerator {
+
     @Override
     public void generateNoise(@NotNull WorldInfo worldInfo, @NotNull Random random, int chunkX, int chunkZ, @NotNull ChunkData chunkData) {
         for (int x = 0; x < 16; x++) {

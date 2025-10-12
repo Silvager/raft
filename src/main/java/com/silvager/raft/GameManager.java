@@ -1,7 +1,12 @@
 package com.silvager.raft;
 
+import com.mojang.brigadier.Command;
+import net.kyori.adventure.text.Component;
 import org.bukkit.*;
+import org.bukkit.block.Biome;
 import org.bukkit.entity.*;
+import org.bukkit.event.HandlerList;
+import org.bukkit.generator.BiomeProvider;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.Vector;
@@ -12,42 +17,65 @@ import java.util.Collection;
 
 public class GameManager {
     public static World raftWorld;
+    public static World raftEndWorld;
     public static ArrayList<BukkitTask> tasks = new ArrayList<>();
     static Material[] allMaterials = Arrays.stream(Material.values())
             .filter(Material::isItem)
-            .filter(m -> m != Material.AIR)
+            .filter(m -> (m != Material.AIR) && (m != Material.OBSIDIAN) && (m != Material.LAVA_BUCKET) && (m != Material.CRYING_OBSIDIAN))
             .toArray(Material[]::new);
     public static Location oceanSpawn;
     private static boolean isRunning = false;
+    private static RaftListeners raftListeners;
     public static void startGame() {
-    setupWorld();
+        if (isRunning) {
+            return;
+        }
+        tasks.forEach(bukkitTask -> bukkitTask.cancel());
+        tasks.clear();
     startCurrentSystem();
     startItemDropping();
-    Raft.registerListener(new RaftListeners());
+    setupPlayers();
+    raftListeners = new RaftListeners();
+    Raft.registerListener(raftListeners);
+    // NEED TO REACTIVATE
 //    RaftEvents.startEvents();
     GameManager.isRunning = true;
     }
     public static boolean getIsRunning() {
         return isRunning;
     }
-    static void setupWorld() {
-        raftWorld = null;
+    public static void stopSystems() {
         tasks.forEach(bukkitTask -> bukkitTask.cancel());
         tasks.clear();
+        // Remove the raft listeners
+        HandlerList.unregisterAll(raftListeners);
+        GameManager.isRunning = false;
+    }
+    static void setupPlayers() {
+        //Move all server players into the world and set them up
+        Collection<Player> players = (Collection<Player>) Raft.getInstance().getServer().getOnlinePlayers();
+        players.forEach((player -> {
+            player.teleportAsync(oceanSpawn);
+            player.setHealth(20);
+            player.setGameMode(GameMode.SURVIVAL);
+
+        }));
+    }
+    //Ran on server start
+    static void setupWorlds() {
+        raftWorld = null;
         // If there is a world currently saved, delete it
         World foundWorld = Bukkit.getWorld("raftWorld");
-        if (foundWorld != null) {
-            // Find the spawn of the normal world
-            World mainWorld = Bukkit.getWorld("world");
-            foundWorld.getPlayers().forEach((player -> player.teleportAsync(mainWorld.getSpawnLocation())));
-            Bukkit.getServer().unloadWorld("raftWorld", false);
+        if (foundWorld == null) {
+            WorldCreator wc = new WorldCreator("raftWorld");
+            wc.generator(new OceanWorldGen());
+            wc.biomeProvider(new SingleBiomeProvidor(Biome.OCEAN));
+            wc.environment(World.Environment.NORMAL);
+            raftWorld = Bukkit.createWorld(wc);
         }
-        //Create or recreate the world
-        WorldCreator wc = new WorldCreator("raftWorld");
-        wc.generator(new OceanWorldGen());
-        wc.biomeProvider(new OceanBiomeProvidor());
-        raftWorld = Bukkit.createWorld(wc);
-        raftWorld.setAutoSave(false);
+
+        assert raftWorld != null;
+        raftWorld.setAutoSave(true);
         raftWorld.setGameRule(GameRule.DO_MOB_SPAWNING, false);
         raftWorld.setViewDistance(5);
         raftWorld.setSimulationDistance(5);
@@ -55,21 +83,26 @@ public class GameManager {
         oceanSpawn = new Location(raftWorld, 7, 32, 7);
         raftWorld.setSpawnLocation(oceanSpawn);
         raftWorld.setDifficulty(Difficulty.HARD);
-        WorldBorder worldBorder = raftWorld.getWorldBorder();
+         WorldBorder worldBorder = raftWorld.getWorldBorder();
         worldBorder.setCenter(oceanSpawn);
         worldBorder.setSize(120);
         worldBorder.setDamageAmount(2);
         worldBorder.setDamageBuffer(3);
-        //Move all server players into the world and set them up
-        Collection<Player> players = (Collection<Player>) Raft.getInstance().getServer().getOnlinePlayers();
-        players.forEach((player -> {
-            player.teleportAsync(oceanSpawn);
-            player.setHealth(20);
-            player.setGameMode(GameMode.SURVIVAL);
-            player.getInventory().clear();
-            player.give(new ItemStack(Material.FISHING_ROD));
-        }));
+
+        raftEndWorld = null;
+        World foundEndWorld = Bukkit.getWorld("raftEndWorld");
+        if (foundEndWorld == null) {
+            WorldCreator wc = new WorldCreator("raftEndWorld");
+            wc.generator(new OceanEndGen());
+            wc.biomeProvider(new SingleBiomeProvidor(Biome.THE_END));
+            wc.environment(World.Environment.THE_END);
+            raftEndWorld = Bukkit.createWorld(wc);
+            EndFightStuff.setupEndCrystals();
+        }
+        assert raftEndWorld != null;
+        raftEndWorld.setAutoSave(true);
     }
+
     static void startCurrentSystem() {
         final Vector currentVector = new Vector(0.1, 0, 0.0);
         final Vector playerVector = new Vector(0.1, 0.0, 0.0);
