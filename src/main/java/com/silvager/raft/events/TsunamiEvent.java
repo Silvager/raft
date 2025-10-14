@@ -14,12 +14,33 @@ import org.bukkit.scheduler.BukkitTask;
 public class TsunamiEvent {
     private static final long WATER_DELAY = 20L;
     private static int currentX = -51;
+    private static boolean isRunning = false;
     public static void startTsunamiEvent() {
         currentX = -51;
         // Location spawnLocation = new Location(raftWorld, -51, 30, Raft.random.nextDouble(-51, 65));
         //x 58 is the max
         GameManager.raftWorld.setStorm(true);
+        isRunning = true;
         Raft.scheduler.runTaskLater(Raft.getInstance(), TsunamiEvent::tsunamiItterate, 1L);
+    }
+    public static void cancelTsunamiIfRunning() {
+        if (!isRunning) {
+            return;
+        }
+        isRunning = false;
+        // Delete the whole tsunami
+        for (int z=-52; z<66; z++) {
+            for (int y=50; y>30; y--) {
+                for (int x=currentX+1; x>currentX -13; x--) {
+                    Block block = GameManager.raftWorld.getBlockAt(x, y, z);
+                    if (block.getType() == Material.WATER) {
+                        block.setType(Material.AIR);
+                    }
+                }
+            }
+
+        }
+
     }
     private static void tsunamiItterate() {
         if (currentX <= 58) {
@@ -48,6 +69,10 @@ public class TsunamiEvent {
             currentX++;
             Raft.scheduler.runTaskLater(Raft.getInstance(), TsunamiEvent::tsunamiItterate, WATER_DELAY);
             GameManager.raftWorld.setStorm(false);
+        }
+
+        if (currentX == 68) {
+            isRunning = false;
         }
 
     }

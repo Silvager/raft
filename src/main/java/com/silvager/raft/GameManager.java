@@ -1,6 +1,7 @@
 package com.silvager.raft;
 
 import com.mojang.brigadier.Command;
+import com.silvager.raft.events.TsunamiEvent;
 import net.kyori.adventure.text.Component;
 import org.bukkit.*;
 import org.bukkit.block.Biome;
@@ -19,9 +20,13 @@ public class GameManager {
     public static World raftWorld;
     public static World raftEndWorld;
     public static ArrayList<BukkitTask> tasks = new ArrayList<>();
+    static final Material[] bannedMaterials =
+            {Material.AIR, Material.OBSIDIAN, Material.CRYING_OBSIDIAN, Material.LAVA_BUCKET,
+                    Material.END_PORTAL_FRAME, Material.END_PORTAL_FRAME, Material.NETHER_PORTAL, Material.ENDER_DRAGON_SPAWN_EGG};
+
     static Material[] allMaterials = Arrays.stream(Material.values())
             .filter(Material::isItem)
-            .filter(m -> (m != Material.AIR) && (m != Material.OBSIDIAN) && (m != Material.LAVA_BUCKET) && (m != Material.CRYING_OBSIDIAN))
+            .filter(m -> Arrays.stream(bannedMaterials).noneMatch(b -> b == m))
             .toArray(Material[]::new);
     public static Location oceanSpawn;
     private static boolean isRunning = false;
@@ -49,6 +54,7 @@ public class GameManager {
         tasks.clear();
         // Remove the raft listeners
         HandlerList.unregisterAll(raftListeners);
+        TsunamiEvent.cancelTsunamiIfRunning();
         GameManager.isRunning = false;
     }
     static void setupPlayers() {

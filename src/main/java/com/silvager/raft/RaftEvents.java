@@ -22,6 +22,8 @@ public class RaftEvents {
         eventsMap.put("chatTroll", MiniEvents::chatTrollEvent);
         eventsMap.put("amongUs", AmongUsEvent::startAmongUs);
         eventsMap.put("armorKit", ArmorKitEvent::startArmorKitEvent);
+        eventsMap.put("sandFall", MiniEvents::sandFallEvent);
+        eventsMap.put("wish", WishEvent::wishEvent);
 
 
         refillEventsLeftToRun();

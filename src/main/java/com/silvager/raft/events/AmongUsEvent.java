@@ -2,6 +2,8 @@ package com.silvager.raft.events;
 
 import com.silvager.raft.GameManager;
 import com.silvager.raft.Raft;
+import com.silvager.raft.RaftMusic;
+import com.silvager.raft.RaftSongs;
 import com.xxmicloxx.NoteBlockAPI.model.Song;
 import com.xxmicloxx.NoteBlockAPI.songplayer.RadioSongPlayer;
 import com.xxmicloxx.NoteBlockAPI.utils.NBSDecoder;
@@ -17,10 +19,7 @@ import java.io.File;
 import java.time.Duration;
 
 public class AmongUsEvent {
-    static Song sussySong;
-    public static void preloadSussySong() {
-        sussySong = NBSDecoder.parse(Raft.getInstance().getResource("songs/sussy.nbs"));
-    }
+
     public static void startAmongUs() {
         //For later
         Title title = Title.title(
@@ -28,7 +27,7 @@ public class AmongUsEvent {
                 Component.text("Do your tasks").color(net.kyori.adventure.text.format.NamedTextColor.GRAY),
                 Title.Times.times(Duration.ofMillis(500), Duration.ofSeconds(3), Duration.ofMillis(500))
         );
-        playSong();
+        RaftMusic.playSong(RaftSongs.AMONGUS);
         Raft.scheduler.runTaskLater(Raft.getInstance(), ()-> {
             GameManager.raftWorld.getPlayers().forEach((player -> {
                 player.sendMessage(Component.text("The imposter will be chosen in 10 seconds...").color(NamedTextColor.RED));
@@ -41,9 +40,5 @@ public class AmongUsEvent {
             }));
         }, 240L);
     }
-    private static void playSong() {
-        RadioSongPlayer rsp = new RadioSongPlayer(sussySong);
-        GameManager.raftWorld.getPlayers().forEach((rsp::addPlayer));
-        rsp.setPlaying(true);
-    }
+
 }

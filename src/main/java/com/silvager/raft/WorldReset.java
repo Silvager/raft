@@ -10,7 +10,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.util.Collection;
 import java.util.Comparator;
-import java.util.Objects;
 
 public class WorldReset {
     public static void resetWorld() {

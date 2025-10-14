@@ -1,16 +1,31 @@
 package com.silvager.raft;
 
 import io.papermc.paper.event.entity.EntityPortalReadyEvent;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.title.Title;
+import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.PortalType;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Item;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityPortalEnterEvent;
+import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerFishEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.event.world.PortalCreateEvent;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.util.Vector;
+
+import java.time.Duration;
+import java.util.List;
 
 public class RaftListeners implements Listener {
     @EventHandler
@@ -43,14 +58,7 @@ public class RaftListeners implements Listener {
         }
         caughtItem.setVelocity(direction);
     }
-    @EventHandler
-    public static void onPortalBuilt(PortalCreateEvent event) {
-//        if (event.getReason() == PortalCreateEvent.CreateReason.FIRE) {
-//            event.setCancelled(true);
-//            assert event.getEntity() != null;
-//            GameManager.raftWorld.createExplosion(event.getEntity().getLocation(), 1f);
-//        }
-    }
+
     static boolean hasStartedEndFight = false;
     @EventHandler
     public static void onEntityReadyPortal(EntityPortalReadyEvent event) {
@@ -62,5 +70,14 @@ public class RaftListeners implements Listener {
             hasStartedEndFight = true;
         }
         event.setTargetWorld(GameManager.raftEndWorld);
+    }
+    @EventHandler
+    public static void onPlayerDeath(PlayerDeathEvent event) {
+        var player = event.getPlayer();
+        var location = player.getLocation();
+        if (location.getWorld() != GameManager.raftWorld) return;
+        if (location.getX() <= 58) return;
+
+        event.deathMessage(Component.text(player.getName()+" was lost at sea").color(NamedTextColor.BLUE));
     }
 }

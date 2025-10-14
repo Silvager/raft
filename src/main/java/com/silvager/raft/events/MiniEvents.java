@@ -2,6 +2,8 @@ package com.silvager.raft.events;
 
 import com.silvager.raft.GameManager;
 import com.silvager.raft.Raft;
+import com.silvager.raft.RaftMusic;
+import com.silvager.raft.RaftSongs;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -17,6 +19,8 @@ import org.bukkit.entity.boat.SpruceBoat;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
+
+import java.util.List;
 
 import static com.silvager.raft.GameManager.raftWorld;
 
@@ -44,6 +48,7 @@ public class MiniEvents {
         }
     }
     public static void startPiratesEvent() {
+        RaftMusic.playSong(RaftSongs.PIRATES);
         // z of 5 to 10 is fine
         for (double x=-48; x<-44; x++) {
             Location spawnLocation = new Location(GameManager.raftWorld, x, 30, 7);
@@ -108,4 +113,15 @@ public class MiniEvents {
         player.playNote(player.getLocation(), Instrument.BELL, Note.natural(1, Note.Tone.A));
     }));
     }
+    public static void sandFallEvent() {
+        List<Player> players = raftWorld.getPlayers();
+        Location spawn = players.get(Raft.random.nextInt(players.size())).getLocation().clone();
+        spawn.setY(spawn.getY() + 30);
+        for (int x=-1; x<2; x++) {
+            for (int z=-1; z<2;z++) {
+                raftWorld.getBlockAt((int) spawn.getX()+x, (int)spawn.getY(), (int)spawn.getZ()+z).setType(Material.SAND);
+            }
+        }
+    }
+
 }

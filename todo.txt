@@ -1,15 +1,9 @@
 TODO:
-- Make it so u can get ender eyes and portal etc and beat the game... Maybe a water end fight?
-- Better stuff to resume and start raft etc.
-- Ondisable if the tsunami is running, break the water
-- Give obby to the players sometimes
-- Glass around end crystals
-Best items:
-- Lava bucket
+- Add a config system
+- Give obby to the players sometimes to get to the end
+
 Event ideas:
 - Get an f in the chat for a diamond
-- Spawn 3x3 of sand above someones head
-- Wish: someone gets to type one item in chat and if they spell it correctly they get one
 
 
 
