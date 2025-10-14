@@ -41,7 +41,12 @@ public class RaftCommands {
         LiteralArgumentBuilder<CommandSourceStack> runEventNode = Commands.literal("runEvent");
         RaftEvents.getEventsMap().forEach((name, runnable) -> {
             runEventNode.then(Commands.literal(name).executes(ctx -> {
-                runnable.run();
+                if (GameManager.getIsRunning()) {
+                    runnable.run();
+                } else {
+                    ctx.getSource().getSender().sendMessage("Can't run events until the game starts");
+                }
+
                 return Command.SINGLE_SUCCESS;
             }));
         });

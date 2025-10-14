@@ -1,6 +1,5 @@
 TODO:
 - Add a config system
-- Give obby to the players sometimes to get to the end
 
 Event ideas:
 - Get an f in the chat for a diamond

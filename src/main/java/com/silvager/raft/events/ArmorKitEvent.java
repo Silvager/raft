@@ -27,7 +27,7 @@ public class ArmorKitEvent {
 
         EntityEquipment equipment = stand.getEquipment();
 
-        int rand = Raft.random.nextInt(0, 4);
+        int rand = Raft.random.nextInt(0, 5);
         switch (rand) {
             case 0 -> {
                 setKit(equipment, Material.DIAMOND_AXE, Material.SHIELD, Material.LEATHER_BOOTS, Material.CHAINMAIL_LEGGINGS, Material.CHAINMAIL_CHESTPLATE, Material.SKELETON_SKULL);
@@ -37,7 +37,7 @@ public class ArmorKitEvent {
                 equipment.setItemInOffHand(new ItemStack(Material.ARROW, 32));
             }
             case 2 -> {
-                setKit(equipment, Material.NETHERITE_PICKAXE, Material.LAVA_BUCKET, Material.IRON_BOOTS, Material.IRON_LEGGINGS, Material.IRON_CHESTPLATE, Material.BLAST_FURNACE);
+                setKit(equipment, Material.IRON_PICKAXE, Material.LAVA_BUCKET, Material.IRON_BOOTS, Material.IRON_LEGGINGS, Material.IRON_CHESTPLATE, Material.BLAST_FURNACE);
             }
             case 3 -> {
                 setKit(equipment, Material.TRIDENT, Material.ENCHANTED_BOOK, Material.DIAMOND_BOOTS, Material.DIAMOND_LEGGINGS, Material.DIAMOND_CHESTPLATE, Material.SEA_LANTERN);
@@ -46,6 +46,9 @@ public class ArmorKitEvent {
                 meta.addStoredEnchant(Enchantment.RIPTIDE, 1, true);
                 book.setItemMeta(meta);
                 equipment.setItemInOffHand(book);
+            }
+            case 4 -> {
+                setKit(equipment, Material.FLINT_AND_STEEL, Material.TNT, Material.NETHERITE_BOOTS, Material.LEATHER_LEGGINGS, Material.NETHERITE_CHESTPLATE, Material.OBSIDIAN);
             }
         }
     }

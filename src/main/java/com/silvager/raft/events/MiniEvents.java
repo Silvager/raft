@@ -18,6 +18,7 @@ import org.bukkit.entity.boat.AcaciaChestBoat;
 import org.bukkit.entity.boat.SpruceBoat;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.loot.LootTable;
 import org.bukkit.util.Vector;
 
 import java.util.List;
@@ -37,6 +38,7 @@ public class MiniEvents {
             newDrowned.setTarget(player);
             newDrowned.setAggressive(true);
             newDrowned.setVelocity(new Vector(0, 3, 0));
+            newDrowned.customName(Component.text("Aquaman"));
         }
     }
     public static void startCreepersEvent() {
@@ -44,7 +46,9 @@ public class MiniEvents {
         for (int z=-51; z<65; z+=4) {
             Location spawnLocation = new Location(raftWorld, -51, 30, z);
             Creeper creeper = raftWorld.spawn(spawnLocation, Creeper.class);
-            creeper.setPowered(Raft.random.nextBoolean());
+            boolean isPowered = Raft.random.nextBoolean();
+            creeper.setPowered(isPowered);
+            creeper.customName(Component.text(isPowered ? "Big Boomer" : "Boomer"));
         }
     }
     public static void startPiratesEvent() {
@@ -72,6 +76,7 @@ public class MiniEvents {
         ItemStack enchantedBow = new ItemStack(Material.BOW);
         enchantedBow.addUnsafeEnchantment(Enchantment.PUNCH, 5);
         skeleton.getEquipment().setItemInMainHand(enchantedBow);
+        skeleton.customName(Component.text("Sniper"));
 
     }
     public static void startCastawayEvent() {
@@ -86,6 +91,9 @@ public class MiniEvents {
             case 2 -> inv.addItem(new ItemStack(Material.ENDER_PEARL, 9));
             case 3 -> inv.addItem(new ItemStack(Material.POTATO, 30));
             case 4 -> inv.addItem(new ItemStack(Material.EMERALD, 20));
+        }
+        if (Raft.random.nextBoolean()) {
+            inv.addItem(new ItemStack(Material.OBSIDIAN, Raft.random.nextInt(1, 3)));
         }
 
         Villager villager = raftWorld.spawn(spawnLocation, Villager.class);

@@ -3,6 +3,7 @@ package com.silvager.raft;
 import io.papermc.paper.event.entity.EntityPortalReadyEvent;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import net.kyori.adventure.title.Title;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -79,5 +80,31 @@ public class RaftListeners implements Listener {
         if (location.getX() <= 58) return;
 
         event.deathMessage(Component.text(player.getName()+" was lost at sea").color(NamedTextColor.BLUE));
+    }
+    @EventHandler
+    public static void onEntityDie(EntityDeathEvent event) {
+        Entity entity = event.getEntity();
+        if (entity.getType() == EntityType.ITEM) return;
+        var componentCustomName = entity.customName();
+        if (componentCustomName == null) return;
+        String customName = PlainTextComponentSerializer.plainText().serialize(componentCustomName);
+        Raft.getInstance().getLogger().info(customName);
+
+        ItemStack toAdd = switch (customName) {
+            case "Sniper" -> randObby(1, 4);
+            case "Short John Silver", "Big Boomer" -> randObby(-1, 3);
+            case "Boomer" -> randObby(-2, 3);
+            case "Aquaman" -> randObby(-2, 2);
+            default -> null;
+        };
+        if (toAdd == null) return;
+        if (toAdd.getAmount() == 0) return;
+
+        event.getDrops().add(toAdd);
+    }
+    private static ItemStack randObby(int floor, int ceil) {
+        int num = Raft.random.nextInt(floor, ceil);
+        if (num < 1) return null;
+        return new ItemStack(Material.OBSIDIAN, num);
     }
 }
