@@ -1,12 +1,11 @@
 package com.silvager.raft.events;
 
-import com.google.common.util.concurrent.Service;
+
 import com.silvager.raft.GameManager;
 import com.silvager.raft.Raft;
 import com.silvager.raft.RaftMusic;
 import com.silvager.raft.RaftSongs;
 import io.papermc.paper.event.player.AsyncChatEvent;
-import io.papermc.paper.event.player.ChatEvent;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
@@ -18,10 +17,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.AsyncPlayerChatEvent;
-import org.bukkit.event.player.PlayerChatEvent;
 import org.bukkit.inventory.ItemStack;
-import org.checkerframework.common.returnsreceiver.qual.This;
 
 import java.util.List;
 

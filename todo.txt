@@ -2,9 +2,6 @@ TODO:
 
 Event ideas:
 - Get an f in the chat for a diamond
-
-
-
 - Lightning storm (stormy weather and then lightning- but the lightning tracks where players were a few seconds ago and strikes there)
 - A boat and chest spawns with a message in it about a castaway
 - A ton of one random mob spawn and go down

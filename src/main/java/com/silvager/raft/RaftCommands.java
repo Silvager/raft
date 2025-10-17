@@ -15,11 +15,13 @@ public class RaftCommands {
     static HashSet<CommandSender> inProgressReset = new HashSet<>();
     public static void registerCommands() {
         LiteralArgumentBuilder<CommandSourceStack> startNode = Commands.literal("start")
+                .requires(sender -> sender.getSender().isOp())
                 .executes(ctx -> {
                     GameManager.startGame();
                     return Command.SINGLE_SUCCESS;
                 });
         LiteralArgumentBuilder<CommandSourceStack> resetNode = Commands.literal("resetWorld")
+                .requires(sender -> sender.getSender().isOp())
                 .executes(ctx -> {
                     if (!inProgressReset.contains(ctx.getSource().getSender())) {
                         ctx.getSource().getSender().sendMessage("Type the command again to confirm full Raft world reset");
@@ -39,6 +41,8 @@ public class RaftCommands {
                 });
 
         LiteralArgumentBuilder<CommandSourceStack> eventNode = Commands.literal("event");
+        eventNode.requires(sender -> sender.getSender().isOp());
+
         RaftEvents.getEventsMap().forEach((name, runnable) -> {
             eventNode.then(Commands.literal(name).executes(ctx -> {
                 if (GameManager.getIsRunning()) {
