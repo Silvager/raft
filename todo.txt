@@ -1,5 +1,4 @@
 TODO:
-- Add a config system
 
 Event ideas:
 - Get an f in the chat for a diamond

@@ -42,8 +42,9 @@ public class GameManager {
     setupPlayers();
     raftListeners = new RaftListeners();
     Raft.registerListener(raftListeners);
-    // NEED TO REACTIVATE
-//    RaftEvents.startEvents();
+    if (Raft.getInstance().getConfig().getBoolean("enable-events")) {
+        RaftEvents.startEvents();
+    }
     GameManager.isRunning = true;
     }
     public static boolean getIsRunning() {
@@ -110,8 +111,10 @@ public class GameManager {
     }
 
     static void startCurrentSystem() {
-        final Vector currentVector = new Vector(0.1, 0, 0.0);
-        final Vector playerVector = new Vector(0.1, 0.0, 0.0);
+        double currentSpeed = Raft.getInstance().getConfig().getDouble("ocean-current-speed");
+        if (currentSpeed < 0.01) currentSpeed = 0.01;
+        if (currentSpeed > 100) currentSpeed = 100;
+        final Vector currentVector = new Vector(currentSpeed/10.0, 0, 0.0);
         tasks.add(Raft.scheduler.runTaskTimer(Raft.getInstance(), () -> {
             // Iterate through every world loaded on the server
                 // For each world, iterate through all entities within it
@@ -128,7 +131,7 @@ public class GameManager {
                             if (player.getGameMode() == GameMode.SURVIVAL) {
                                 Vector velocity = entity.getVelocity();
 
-                                entity.setVelocity(velocity.add(playerVector));
+                                entity.setVelocity(velocity.add(currentVector));
                             }
                         }
                         if (entity.getType() == EntityType.ITEM) {
@@ -151,6 +154,9 @@ public class GameManager {
         }, 0L, 5L));
     }
     static void startItemDropping() {
+        double itemSpawnFrequency = Raft.getInstance().getConfig().getDouble("item-spawn-frequency");
+        if (itemSpawnFrequency < 0.01) itemSpawnFrequency = 0.01;
+        if (itemSpawnFrequency > 100.0) itemSpawnFrequency = 100.0;
         tasks.add(Raft.scheduler.runTaskTimer(Raft.getInstance(), () -> {
             Location spawnLocation = new Location(raftWorld, -51, 30, Raft.random.nextDouble(-51, 65));
             Item item = raftWorld.spawn(spawnLocation, Item.class);
@@ -159,7 +165,7 @@ public class GameManager {
                 int amount = itemMaterial.getMaxStackSize() == 1 ? 1 : Raft.random.nextInt(1, 5);
                 item.setItemStack(new ItemStack(itemMaterial, amount));
             } catch (IllegalArgumentException ignored){}
-
-        }, 0L, 15L));
+        // Because a spawn every 15 ticks is the default, it will multiply the config number by 15
+        }, 0L, (Math.round(itemSpawnFrequency * 15))));
     }
 }

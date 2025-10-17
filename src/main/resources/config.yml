@@ -1,0 +1,30 @@
+ocean-current-speed: 1.0 # 1 is the default
+item-spawn-frequency: 1.0 # 1 is the default
+
+enable-events: true
+
+# This will make all events happen in a random order then do them again.
+# If set to false, the events will be truly random, but there
+# is a chance you may not ever get certain events
+run-all-events-then-repeat: true
+
+# All of these times are in seconds
+# starting-grace-period means how long after raft starts do you have before the event system starts
+starting-grace-period: 60
+min-event-delay: 30
+max-event-delay: 80
+
+# If enable-events is false, this will be overruled
+enable-event:
+  pirates: true
+  creepers: true
+  drowned: true
+  megaSniper: true
+  tsunami: true
+  fireball: true
+  castaway: true
+  chatTroll: true
+  amongUs: true
+  armorKit: true
+  sandFall: true
+  wish: true

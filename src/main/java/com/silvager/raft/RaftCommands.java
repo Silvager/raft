@@ -14,15 +14,15 @@ import java.util.Set;
 public class RaftCommands {
     static HashSet<CommandSender> inProgressReset = new HashSet<>();
     public static void registerCommands() {
-        LiteralArgumentBuilder<CommandSourceStack> startNode = Commands.literal("startRaft")
+        LiteralArgumentBuilder<CommandSourceStack> startNode = Commands.literal("start")
                 .executes(ctx -> {
                     GameManager.startGame();
                     return Command.SINGLE_SUCCESS;
                 });
-        LiteralArgumentBuilder<CommandSourceStack> resetNode = Commands.literal("resetRaft")
+        LiteralArgumentBuilder<CommandSourceStack> resetNode = Commands.literal("resetWorld")
                 .executes(ctx -> {
                     if (!inProgressReset.contains(ctx.getSource().getSender())) {
-                        ctx.getSource().getSender().sendMessage("Type the command again to confirm reset");
+                        ctx.getSource().getSender().sendMessage("Type the command again to confirm full Raft world reset");
                         inProgressReset.add(ctx.getSource().getSender());
                         Raft.scheduler.runTaskLater(Raft.getInstance(), () -> {
                             if (inProgressReset.contains(ctx.getSource().getSender())) {
@@ -38,9 +38,9 @@ public class RaftCommands {
                     return Command.SINGLE_SUCCESS;
                 });
 
-        LiteralArgumentBuilder<CommandSourceStack> runEventNode = Commands.literal("runEvent");
+        LiteralArgumentBuilder<CommandSourceStack> eventNode = Commands.literal("event");
         RaftEvents.getEventsMap().forEach((name, runnable) -> {
-            runEventNode.then(Commands.literal(name).executes(ctx -> {
+            eventNode.then(Commands.literal(name).executes(ctx -> {
                 if (GameManager.getIsRunning()) {
                     runnable.run();
                 } else {
@@ -50,10 +50,12 @@ public class RaftCommands {
                 return Command.SINGLE_SUCCESS;
             }));
         });
+        LiteralArgumentBuilder<CommandSourceStack> baseNode = Commands.literal("raft");
+        baseNode.then(startNode);
+        baseNode.then(resetNode);
+        baseNode.then(eventNode);
         Raft.getInstance().getLifecycleManager().registerEventHandler(LifecycleEvents.COMMANDS, commands -> {
-            commands.registrar().register(startNode.build());
-            commands.registrar().register(runEventNode.build());
-            commands.registrar().register(resetNode.build());
+            commands.registrar().register(baseNode.build());
         });
     }
 }

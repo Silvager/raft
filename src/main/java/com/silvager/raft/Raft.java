@@ -16,8 +16,17 @@ public final class Raft extends JavaPlugin {
         // Plugin startup logic
         Raft.instance = this;
         scheduler = this.getServer().getScheduler();
+        // Copy the default config if no config preset
+        saveDefaultConfig();
+
+        boolean noteblockApiInstalled = true;
+        if (!Bukkit.getPluginManager().isPluginEnabled("NoteBlockAPI")) {
+            getLogger().warning("*** NoteBlockAPI is not installed or is not enabled- Raft will work fine, but you won't hear music ***");
+            noteblockApiInstalled = false;
+        }
+        RaftMusic.preloadMusic(noteblockApiInstalled);
+
         //Events need to be initialized before commands
-        RaftMusic.preloadMusic();
         RaftEvents.initializeEvents();
         RaftCommands.registerCommands();
         GameManager.setupWorlds();
