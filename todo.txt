@@ -8,3 +8,8 @@ Event ideas:
 - Hunger event
 - A mooshroom spawns underwater and it floats down (players are alerted but its really hard to save)
 - randomly give everyone speed 50 for a few seconds
+
+BUGS:
+- People spawn in the main world not raft world, even if game is already running
+- Ender dragon can go under water and get glitched
+- Less creepers
