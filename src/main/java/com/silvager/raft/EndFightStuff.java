@@ -31,7 +31,7 @@ public class EndFightStuff implements Listener {
      Raft.registerListener(instance);
     }
     static void startEndCurrentSystem() {
-        final Vector currentVector = new Vector(0, -0.5, 0.0);
+        final Vector currentVector = new Vector(0, 1.0, 0.0);
         GameManager.tasks.add(Raft.scheduler.runTaskTimer(Raft.getInstance(), () -> {
             // Iterate through every world loaded on the server
             // For each world, iterate through all entities within it

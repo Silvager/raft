@@ -43,10 +43,10 @@ public class MiniEvents {
     }
     public static void startCreepersEvent() {
         // Location spawnLocation = new Location(raftWorld, -51, 30, Raft.random.nextDouble(-51, 65));
-        for (int z=-51; z<65; z+=4) {
+        for (int z=-51; z<65; z+=5) {
             Location spawnLocation = new Location(raftWorld, -51, 30, z);
             Creeper creeper = raftWorld.spawn(spawnLocation, Creeper.class);
-            boolean isPowered = Raft.random.nextBoolean();
+            boolean isPowered = Raft.random.nextInt(0, 4) == 0;
             creeper.setPowered(isPowered);
             creeper.customName(Component.text(isPowered ? "Big Boomer" : "Boomer"));
         }

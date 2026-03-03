@@ -34,7 +34,13 @@ public class WishEvent implements Listener {
     }
     public static void wishEvent() {
         List<Player> players = raftWorld.getPlayers();
-        Player player = players.get(Raft.random.nextInt(players.size()));
+        Player player;
+        if (players.size() > 1) {
+            player = players.get(Raft.random.nextInt(players.size()));
+        } else {
+            player = players.getFirst();
+        }
+
         RaftMusic.playSong(RaftSongs.UPONRAINBOW, player);
 
         player.playNote(player.getLocation(), Instrument.BELL, Note.natural(1, Note.Tone.E));

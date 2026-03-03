@@ -5,6 +5,8 @@ import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
 import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -17,14 +19,19 @@ public class RaftCommands {
         LiteralArgumentBuilder<CommandSourceStack> startNode = Commands.literal("start")
                 .requires(sender -> sender.getSender().isOp())
                 .executes(ctx -> {
-                    GameManager.startGame();
+                    if (!GameManager.getIsRunning()) {
+                        GameManager.startGame();
+                    } else {
+                        ctx.getSource().getSender().sendMessage(Component.text("Raft is already started").color(NamedTextColor.BLUE));
+                    }
+
                     return Command.SINGLE_SUCCESS;
                 });
         LiteralArgumentBuilder<CommandSourceStack> resetNode = Commands.literal("resetWorld")
                 .requires(sender -> sender.getSender().isOp())
                 .executes(ctx -> {
                     if (!inProgressReset.contains(ctx.getSource().getSender())) {
-                        ctx.getSource().getSender().sendMessage("Type the command again to confirm full Raft world reset");
+                        ctx.getSource().getSender().sendMessage(Component.text("Type the command again to confirm full Raft world reset").color(NamedTextColor.RED));
                         inProgressReset.add(ctx.getSource().getSender());
                         Raft.scheduler.runTaskLater(Raft.getInstance(), () -> {
                             if (inProgressReset.contains(ctx.getSource().getSender())) {

@@ -70,7 +70,12 @@ public class RaftListeners implements Listener {
             EndFightStuff.endFightStarted();
             hasStartedEndFight = true;
         }
-        event.setTargetWorld(GameManager.raftEndWorld);
+        if (event.getEntity().getWorld() == GameManager.raftWorld) {
+            event.setTargetWorld(GameManager.raftEndWorld);
+        } else if (event.getEntity().getWorld() == GameManager.raftEndWorld){
+            event.setTargetWorld(GameManager.raftWorld);
+        }
+
     }
     @EventHandler
     public static void onPlayerDeath(PlayerDeathEvent event) {
