@@ -123,6 +123,7 @@ public class MiniEvents {
     }
     public static void sandFallEvent() {
         List<Player> players = raftWorld.getPlayers();
+        if (players.isEmpty()) return;
         Location spawn = players.get(Raft.random.nextInt(players.size())).getLocation().clone();
         spawn.setY(spawn.getY() + 30);
         for (int x=-1; x<2; x++) {

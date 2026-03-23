@@ -1,5 +1,6 @@
 package com.silvager.raft;
 
+import com.silvager.raft.islandDungeons.DungeonEvent;
 import io.papermc.paper.event.entity.EntityPortalReadyEvent;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -8,6 +9,7 @@ import net.kyori.adventure.title.Title;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.PortalType;
+import org.bukkit.World;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -81,6 +83,15 @@ public class RaftListeners implements Listener {
     public static void onPlayerDeath(PlayerDeathEvent event) {
         var player = event.getPlayer();
         var location = player.getLocation();
+        // Check if they died in dungeon world
+        World dungeonWorld = DungeonEvent.getDungeonWorld();
+        if (dungeonWorld != null) {
+            if (location.getWorld() == dungeonWorld) {
+                event.deathMessage(Component.text(player.getName()+" will not be returning from the expedition...").color(NamedTextColor.BLUE));
+                return;
+            }
+        }
+        //They didn't die in dungeon world
         if (location.getWorld() != GameManager.raftWorld) return;
         if (location.getX() <= 58) return;
 

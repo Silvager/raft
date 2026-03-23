@@ -1,6 +1,7 @@
 package com.silvager.raft;
 
 import com.silvager.raft.events.*;
+import com.silvager.raft.islandDungeons.DungeonEvent;
 
 import java.util.*;
 
@@ -20,7 +21,7 @@ public class RaftEvents {
         if (tempGracePeriod > 3600) tempGracePeriod = 3600;
         gracePeriod = tempGracePeriod * 20L;
         int tempMinDelay = Raft.getInstance().getConfig().getInt("min-event-delay");
-        if (tempMinDelay < 1) tempMinDelay = 1;
+        if (tempMinDelay < 10) tempMinDelay = 10;
         if (tempMinDelay > 3600) tempMinDelay = 3600;
         minDelay = tempMinDelay * 20L;
         int tempMaxDelay = Raft.getInstance().getConfig().getInt("max-event-delay");
@@ -40,6 +41,7 @@ public class RaftEvents {
         eventsMap.put("armorKit", ArmorKitEvent::startArmorKitEvent);
         eventsMap.put("sandFall", MiniEvents::sandFallEvent);
         eventsMap.put("wish", WishEvent::wishEvent);
+        eventsMap.put("findDungeons", DungeonEvent::runDungeonEvent);
         eventsMap.forEach((name, runnable) -> {
             if (Raft.getInstance().getConfig().getBoolean("enable-event."+name)) {
                 eventsAllowed.put(name, runnable);

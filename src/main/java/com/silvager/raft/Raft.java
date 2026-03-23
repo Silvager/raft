@@ -1,10 +1,12 @@
 package com.silvager.raft;
 
+import com.silvager.raft.islandDungeons.DungeonEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitScheduler;
 
+import java.io.IOException;
 import java.util.Random;
 
 public final class Raft extends JavaPlugin {
@@ -31,6 +33,7 @@ public final class Raft extends JavaPlugin {
         RaftCommands.registerCommands();
         GameManager.setupWorlds();
         PlayerJoining.setupPlayerJoining();
+        DungeonEvent.setupDungeonEvent();
         Raft.registerListener(new PlayerJoining());
     }
     public static Raft getInstance() {

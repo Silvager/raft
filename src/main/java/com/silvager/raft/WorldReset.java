@@ -29,7 +29,7 @@ public class WorldReset {
         // Re-get the pdc of the new world
         PlayerJoining.setupPlayerJoining();
     }
-    private static void deleteWorld(World world) {
+    public static void deleteWorld(World world) {
         File path = world.getWorldFolder();
         try {
             Files.walk(path.toPath())

@@ -28,3 +28,4 @@ enable-event:
   armorKit: true
   sandFall: true
   wish: true
+  findDungeons: true

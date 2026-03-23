@@ -14,6 +14,7 @@ public class FireballEvent {
     private static int timesRun = 0;
     private static int timesToRun = 10;
     public static void startFireballEvent() {
+        if (GameManager.raftWorld.getPlayers().isEmpty()) return;
         timesToRun = Raft.random.nextInt(3, 11);
         Raft.scheduler.runTaskLater(Raft.getInstance(), FireballEvent::fireballItterator, 20L);
     }

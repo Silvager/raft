@@ -33,7 +33,7 @@ public class WishEvent implements Listener {
         return instance;
     }
     public static void wishEvent() {
-        List<Player> players = raftWorld.getPlayers();
+        List<Player> players = (List<Player>) Raft.getInstance().getServer().getOnlinePlayers();
         Player player;
         if (players.size() > 1) {
             player = players.get(Raft.random.nextInt(players.size()));

@@ -83,7 +83,7 @@ public class GameManager {
 
         assert raftWorld != null;
         raftWorld.setAutoSave(true);
-        raftWorld.setGameRule(GameRule.DO_MOB_SPAWNING, false);
+        raftWorld.setSpawnFlags(false ,false);
         raftWorld.setViewDistance(5);
         raftWorld.setSimulationDistance(5);
         raftWorld.setTime(1000L);

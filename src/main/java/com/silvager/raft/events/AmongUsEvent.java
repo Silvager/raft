@@ -42,6 +42,7 @@ public class AmongUsEvent {
     );
 
     public static void startAmongUs() {
+        if (GameManager.raftWorld.getPlayers().isEmpty()) return;
         boolean imposterExists = Raft.random.nextInt(0, 4) == 0;
         Player imposter;
         if (imposterExists) {
