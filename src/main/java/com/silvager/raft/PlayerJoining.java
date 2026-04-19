@@ -23,9 +23,7 @@ public class PlayerJoining implements Listener {
     }
     @EventHandler
     public static void onPlayerConnect(PlayerJoinEvent event) {
-        Player player =event.getPlayer();
-
-        Raft.getInstance().getLogger().info("Player join. "+player.getName()+" iS RUnning: "+GameManager.getIsRunning());
+        Player player = event.getPlayer();
 
         List<String> prevPlayerNames = pdc.get(key, PersistentDataType.LIST.strings());
         // IF its the first player on a brand new world, or they are not listed, clear them and give rod

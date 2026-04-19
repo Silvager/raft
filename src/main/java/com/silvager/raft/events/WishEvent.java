@@ -9,16 +9,15 @@ import io.papermc.paper.event.player.AsyncChatEvent;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
-import org.bukkit.Instrument;
-import org.bukkit.Material;
-import org.bukkit.Note;
-import org.bukkit.Sound;
+import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import static com.silvager.raft.GameManager.raftWorld;
@@ -33,7 +32,7 @@ public class WishEvent implements Listener {
         return instance;
     }
     public static void wishEvent() {
-        List<Player> players = (List<Player>) Raft.getInstance().getServer().getOnlinePlayers();
+        List<Player> players = new ArrayList<>(Bukkit.getOnlinePlayers());
         Player player;
         if (players.size() > 1) {
             player = players.get(Raft.random.nextInt(players.size()));

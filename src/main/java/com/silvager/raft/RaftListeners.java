@@ -48,12 +48,10 @@ public class RaftListeners implements Listener {
             return;
         }
 
-        Raft.getInstance().getLogger().info(caughtEntity.getName());
-        if (!(caughtEntity instanceof Item)) {
+        if (!(caughtEntity instanceof Item caughtItem)) {
             return;
         }
 
-        Item caughtItem = (Item) caughtEntity;
         Vector direction = event.getPlayer().getLocation().toVector().subtract(caughtItem.getLocation().toVector());
         direction = direction.multiply(0.1f);
         if (direction.getY() < 0.2f) {
@@ -104,7 +102,6 @@ public class RaftListeners implements Listener {
         var componentCustomName = entity.customName();
         if (componentCustomName == null) return;
         String customName = PlainTextComponentSerializer.plainText().serialize(componentCustomName);
-        Raft.getInstance().getLogger().info(customName);
 
         ItemStack toAdd = switch (customName) {
             case "Sniper" -> randObby(1, 4);

@@ -80,9 +80,9 @@ public class EndFightStuff implements Listener {
                     default -> Material.PINK_STAINED_GLASS;
                 };
                 Vector midPos = new Vector(x, y, z);
-                for (int x2 = x-5; x2<x+5; x2++) {
-                    for (int y2 = y-5; y2<y+5; y2++) {
-                        for (int z2 = z-5; z2 <z+5; z2++) {
+                for (int x2 = x-6; x2<x+6; x2++) {
+                    for (int y2 = y-6; y2<y+6; y2++) {
+                        for (int z2 = z-6; z2 <z+6; z2++) {
                             Vector pos = new Vector(x2, y2, z2);
                             double dist = pos.distance(midPos);
                             if (dist > 4 && dist < 6) {

@@ -51,7 +51,7 @@ public class GameManager {
         return isRunning;
     }
     public static void stopSystems() {
-        tasks.forEach(bukkitTask -> bukkitTask.cancel());
+        tasks.forEach(BukkitTask::cancel);
         tasks.clear();
         // Remove the raft listeners
         HandlerList.unregisterAll(raftListeners);
@@ -60,12 +60,11 @@ public class GameManager {
     }
     static void setupPlayers() {
         //Move all server players into the world and set them up
-        Collection<Player> players = (Collection<Player>) Raft.getInstance().getServer().getOnlinePlayers();
+        Collection<? extends Player> players = Bukkit.getOnlinePlayers();
         players.forEach((player -> {
             player.teleportAsync(oceanSpawn);
             player.setHealth(20);
             player.setGameMode(GameMode.SURVIVAL);
-
         }));
     }
     //Ran on server start
