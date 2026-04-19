@@ -55,7 +55,7 @@ public class MiniEvents {
         RaftMusic.playSong(RaftSongs.PIRATES);
         // z of 5 to 10 is fine
         for (double x=-48; x<-44; x++) {
-            Location spawnLocation = new Location(GameManager.raftWorld, x, 30, 7);
+            Location spawnLocation = new Location(GameManager.raftWorld, x, 30, 9);
             Boat boat = GameManager.raftWorld.spawn(spawnLocation, SpruceBoat.class);
             boat.setRotation(-90f, 0f);
             Pillager pillager = GameManager.raftWorld.spawn(spawnLocation, Pillager.class);

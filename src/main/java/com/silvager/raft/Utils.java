@@ -3,10 +3,11 @@ package com.silvager.raft;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.identity.Identity;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitTask;
 
 public class Utils {
-    public static void runLater(Runnable fxn, long delay) {
-        Raft.scheduler.runTaskLater(Raft.getInstance(), fxn, delay);
+    public static BukkitTask runLater(Runnable fxn, long delay) {
+        return Raft.scheduler.runTaskLater(Raft.getInstance(), fxn, delay);
     }
     public static Player getPlayerFromAudience(Audience audience) {
         String playerName = audience.get(Identity.NAME).orElse("");

@@ -3,7 +3,8 @@ Raft is a Minecraft paper plugin that adds a minigame survival experience loosel
 ## Gameplay
 - You start on a raft in the middle of the ocean, gathering supplies that the current brings you to survive.
 However, that same current can mean your doom so don't fall in!
-- Survive random events that range from helpful, to silly, to deadly
+- Survive random events that range from helpful, to silly, to deadly.
+- Head out on expeditions to explore mysterious islands and wrecks, but be back before the boat leaves...
 - Defeat monsters in events to gather enough obsidian to build a nether portal, which will bring you to a boss fight to win the game!
 
 ## Setup/usage

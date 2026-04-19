@@ -19,7 +19,12 @@ public class OceanWorldGen extends ChunkGenerator {
                     if (y == 29) {
                         if (chunkX == 0 && chunkZ == 0) {
                             if (x > 4 && x < 10 && z > 4 && z < 10) {
-                                chunkData.setBlock(x, y, z, Material.OAK_PLANKS);
+                                if (x == 7 && z == 7) {
+                                    chunkData.setBlock(x, y, z, Material.BEDROCK);
+                                } else {
+                                    chunkData.setBlock(x, y, z, Material.OAK_PLANKS);
+                                }
+
                                 break;
                             }
 

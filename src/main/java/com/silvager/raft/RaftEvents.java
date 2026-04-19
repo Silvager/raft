@@ -42,6 +42,7 @@ public class RaftEvents {
         eventsMap.put("sandFall", MiniEvents::sandFallEvent);
         eventsMap.put("wish", WishEvent::wishEvent);
         eventsMap.put("findDungeons", DungeonEvent::runDungeonEvent);
+        eventsMap.put("shark", SharkEvent::startSharkEvent);
         eventsMap.forEach((name, runnable) -> {
             if (Raft.getInstance().getConfig().getBoolean("enable-event."+name)) {
                 eventsAllowed.put(name, runnable);

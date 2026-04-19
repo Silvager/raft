@@ -29,3 +29,4 @@ enable-event:
   sandFall: true
   wish: true
   findDungeons: true
+  shark: true

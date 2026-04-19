@@ -87,7 +87,7 @@ public class GameManager {
         raftWorld.setViewDistance(5);
         raftWorld.setSimulationDistance(5);
         raftWorld.setTime(1000L);
-        oceanSpawn = new Location(raftWorld, 7, 32, 7);
+        oceanSpawn = new Location(raftWorld, 7.5, 32, 7.5);
         raftWorld.setSpawnLocation(oceanSpawn);
         raftWorld.setDifficulty(Difficulty.HARD);
          WorldBorder worldBorder = raftWorld.getWorldBorder();
