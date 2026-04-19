@@ -28,6 +28,7 @@ import static com.silvager.raft.GameManager.raftWorld;
 public class MiniEvents {
     // 6 13 7
     public static void startDrownedEvent() {
+        if (raftWorld.getPlayerCount() == 0) return;
         Player player = GameManager.raftWorld.getPlayers().getFirst();
         final int dist = 15;
         final int num = 10;
