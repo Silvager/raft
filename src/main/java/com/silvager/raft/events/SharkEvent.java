@@ -82,7 +82,7 @@ public class SharkEvent implements Listener {
             for (BlockFace allBlockFace : allBlockFaces) {
                 Block neiboor = raftWorld.getBlockAt(dolphin.getLocation()).getRelative(allBlockFace, 1);
                 if (neiboor.getType() != Material.AIR && neiboor.getType() != Material.WATER && neiboor.getType() != Material.BEDROCK) {
-                    Location newLocation = neiboor.getLocation();
+                    Location newLocation = neiboor.getLocation().toCenterLocation();
                     Vector direction = newLocation.toVector().subtract(dolphin.getLocation().toVector());
                     newLocation.setDirection(direction);
                     dolphin.teleport(newLocation);
@@ -94,11 +94,11 @@ public class SharkEvent implements Listener {
             }
             // It did not find any more tasty morsels
             isEating = false;
+            dolphin.setRotation(-90, 0);
             if (dolphin.getLocation().getY() != 29.5) {
                 Location downLocation = dolphin.getLocation();
                 downLocation.setY(29.5);
                 dolphin.teleport(downLocation);
-                dolphin.setRotation(-90, 0);
             }
             itteratorTask = Utils.runLater(SharkEvent::dolphinItterator, MOVE_DELAY);
             return;
@@ -115,8 +115,11 @@ public class SharkEvent implements Listener {
                 itteratorTask = Utils.runLater(SharkEvent::dolphinItterator, MOVE_DELAY);
             }
         }
-
-
+    }
+    public static void stopSharkEventIfRunning() {
+        if (dolphin == null) return;
+        if (dolphin.isDead()) return;
+        dolphin.remove();
     }
     @EventHandler
     public static void onEntityDamage(EntityDamageEvent event) {

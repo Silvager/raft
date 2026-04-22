@@ -1,6 +1,7 @@
 package com.silvager.raft;
 
 import com.mojang.brigadier.Command;
+import com.silvager.raft.events.SharkEvent;
 import com.silvager.raft.events.TsunamiEvent;
 import net.kyori.adventure.text.Component;
 import org.bukkit.*;
@@ -55,7 +56,9 @@ public class GameManager {
         tasks.clear();
         // Remove the raft listeners
         HandlerList.unregisterAll(raftListeners);
+        // Clean up events that won't cleanly end
         TsunamiEvent.cancelTsunamiIfRunning();
+        SharkEvent.stopSharkEventIfRunning();
         GameManager.isRunning = false;
     }
     static void setupPlayers() {
