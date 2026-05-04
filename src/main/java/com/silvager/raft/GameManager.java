@@ -1,6 +1,7 @@
 package com.silvager.raft;
 
 import com.mojang.brigadier.Command;
+import com.silvager.raft.events.BubbleEvent;
 import com.silvager.raft.events.SharkEvent;
 import com.silvager.raft.events.TsunamiEvent;
 import net.kyori.adventure.text.Component;
@@ -59,6 +60,7 @@ public class GameManager {
         // Clean up events that won't cleanly end
         TsunamiEvent.cancelTsunamiIfRunning();
         SharkEvent.stopSharkEventIfRunning();
+        BubbleEvent.endBubbleEventIfRunning();
         GameManager.isRunning = false;
     }
     static void setupPlayers() {

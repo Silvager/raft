@@ -9,6 +9,7 @@ However, that same current can mean your doom so don't fall in!
 
 ## Setup/usage
 - Download the JAR and put it into your server's `plugins` folder.
+- Set `allow-flight=true` in your `server.properties` file to avoid kicking players
 - It is recommended to install `NoteBlockAPI` as certain events have music, but the game will run without it
 - Once in the game, run `/raft start` to begin! (op needed) If you stop the server and then restart it, you will need to run `/raft start` again but the world and player inventories will be saved
 - You can use `/raft event` to manually trigger an event
