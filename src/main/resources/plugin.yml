@@ -1,5 +1,5 @@
 name: raft
 version: '1.0-SNAPSHOT'
 main: com.silvager.raft.Raft
-api-version: '1.21'
+api-version: '26.1.2'
 softdepend: [NoteBlockAPI]
