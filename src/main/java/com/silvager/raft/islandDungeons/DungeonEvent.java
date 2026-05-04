@@ -34,10 +34,11 @@ public class DungeonEvent {
     private static final int MAX_EXPLORATION_TIME = 20*30;
     private static final int EXPEDITION_DELAY_TIME = 20*15;
     private static final DungeonSpawn[] dungeonSpawns = {
-      new DungeonSpawn(new Vector3i(8, -47, 8), Component.text("You spot a battered raft in the distance.").color(NamedTextColor.GOLD)),
-            new DungeonSpawn(new Vector3i(-146, -47, -22), Component.text("You see the top of a mysterious pyramid peeking over the horizon.").color(NamedTextColor.LIGHT_PURPLE)),
-            new DungeonSpawn(new Vector3i(-367, -47, -34), Component.text("A lush green island is spotted off to the west.").color(NamedTextColor.GREEN)),
-            new DungeonSpawn(new Vector3i(210, -47, -13), Component.text("You can see a small desert island a decent ways off.").color(NamedTextColor.YELLOW)),
+      new DungeonSpawn(new Vector3i(8, -47, 8), Component.text("You spot a battered raft in the distance.").color(NamedTextColor.GOLD), 50, 110),
+            new DungeonSpawn(new Vector3i(-146, -47, -22), Component.text("You see the top of a mysterious pyramid peeking over the horizon.").color(NamedTextColor.LIGHT_PURPLE), 100, 170),
+            new DungeonSpawn(new Vector3i(-367, -47, -34), Component.text("A lush green island is spotted off to the west.").color(NamedTextColor.GREEN), 140, 230),
+            new DungeonSpawn(new Vector3i(210, -47, -13), Component.text("You can see a small desert island a decent ways off.").color(NamedTextColor.YELLOW), 140, 290),
+            new DungeonSpawn(new Vector3i(446, -47, -31), Component.text("You see a crashed plane floating in the water").color(NamedTextColor.DARK_AQUA), 70, 130),
     };
     private static ArrayList<DungeonSpawn> spawnsLeftToVisit = new ArrayList<>();
     private static boolean isDungeonRunning = false;
@@ -114,7 +115,7 @@ public class DungeonEvent {
         // Notify the remaining people that the expedition has left. A bit after to make sure they left.
         // Also give the folks in the expedition the update.
         // This also triggers the end expedition timer
-        long expeditionTime = Raft.random.nextLong(MIN_EXPLORATION_TIME, MAX_EXPLORATION_TIME);
+        long expeditionTime = Raft.random.nextLong(dungeonSpawn.minExploreTime()* 20L, dungeonSpawn.maxExploreTime()* 20L);
         World finalDungeonWorld = dungeonWorld;
         Utils.runLater(() -> {
             raftWorld.getPlayers().forEach(player -> {
@@ -129,7 +130,7 @@ public class DungeonEvent {
             finalDungeonWorld.getPlayers().forEach(player -> {
                 player.sendMessage(Component.text("The boat will leave to return to the main raft before the raft has drifted too far away.\n" +
                         "Make sure you are in the boat at that time or you will be left behind (warning will be given)").color(NamedTextColor.RED));
-                player.sendMessage(Component.text(expeditionTime));
+                player.sendMessage(Component.text(expeditionTime/20));
                 player.playNote(player.getLocation(), Instrument.BELL, Note.natural(1, Note.Tone.G));
             });
             // Start water damage in dungeon world
@@ -201,7 +202,7 @@ public class DungeonEvent {
                     entity.remove();
                 } else if (entity.getType() == EntityType.PLAYER) {
                     Player player = (Player) entity;
-                    player.damage(3);
+                    player.damage(2);
                 }
             }
         });
