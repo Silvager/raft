@@ -30,3 +30,5 @@ enable-event:
   wish: true
   findDungeons: true
   shark: true
+  circusPeanut: true
+  bubble: true

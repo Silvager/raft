@@ -1,9 +1,6 @@
 package com.silvager.raft.events;
 
-import com.silvager.raft.GameManager;
-import com.silvager.raft.Raft;
-import com.silvager.raft.RaftMusic;
-import com.silvager.raft.RaftSongs;
+import com.silvager.raft.*;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -18,6 +15,7 @@ import org.bukkit.entity.boat.AcaciaChestBoat;
 import org.bukkit.entity.boat.SpruceBoat;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.loot.LootTable;
 import org.bukkit.util.Vector;
 
@@ -123,14 +121,35 @@ public class MiniEvents {
     }));
     }
     public static void sandFallEvent() {
-        List<Player> players = raftWorld.getPlayers();
-        if (players.isEmpty()) return;
-        Location spawn = players.get(Raft.random.nextInt(players.size())).getLocation().clone();
+        Player player = Utils.getRandomPlayerOrNull();
+        if (player == null) return;
+        Location spawn = player.getLocation().clone();
         spawn.setY(spawn.getY() + 30);
         for (int x=-1; x<2; x++) {
             for (int z=-1; z<2;z++) {
                 raftWorld.getBlockAt((int) spawn.getX()+x, (int)spawn.getY(), (int)spawn.getZ()+z).setType(Material.SAND);
             }
+        }
+    }
+    public static void circusPeanutEvent() {
+//        Location spawnLocation = new Location(raftWorld, -51, 30, Raft.random.nextDouble(-51, 65));
+        Location spawnLocation = new Location(raftWorld, -51, 30, 0);
+        Witch witch = raftWorld.spawn(spawnLocation, Witch.class);
+        ItemStack itemStack = new ItemStack(Material.RESIN_CLUMP, 5);
+        ItemMeta meta = itemStack.getItemMeta();
+        meta.setEnchantmentGlintOverride(true);
+        meta.displayName(Component.text("Circus Peanut").color(NamedTextColor.LIGHT_PURPLE));
+        meta.setMaxStackSize(5);
+        itemStack.setItemMeta(meta);
+
+        Item previousItem = raftWorld.spawn(spawnLocation, Item.class);
+        previousItem.setItemStack(itemStack);
+        witch.addPassenger(previousItem);
+        for (int i=0; i<50; i++) {
+            Item newItem = raftWorld.spawn(spawnLocation, Item.class);
+            newItem.setItemStack(itemStack);
+            previousItem.addPassenger(newItem);
+            previousItem = newItem;
         }
     }
 

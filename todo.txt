@@ -3,13 +3,15 @@ TODO:
 Event ideas:
 - Get an f in the chat for a diamond
 - Lightning storm (stormy weather and then lightning- but the lightning tracks where players were a few seconds ago and strikes there)
-- A boat and chest spawns with a message in it about a castaway
 - A ton of one random mob spawn and go down
 - Hunger event
 - A mooshroom spawns underwater and it floats down (players are alerted but its really hard to save)
 - randomly give everyone speed 50 for a few seconds
+
+- Tower of circus peanuts go down
+- Bubble player floats in
 TO FIX UP:
--= Make the shark in the middle of block
+- Practice timed dungeon so each dungeon has its own time
 
 BUGS:
 - People spawn in the main world not raft world, even if game is already running (sometimes?)

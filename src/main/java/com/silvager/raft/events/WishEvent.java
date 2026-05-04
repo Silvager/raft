@@ -1,10 +1,7 @@
 package com.silvager.raft.events;
 
 
-import com.silvager.raft.GameManager;
-import com.silvager.raft.Raft;
-import com.silvager.raft.RaftMusic;
-import com.silvager.raft.RaftSongs;
+import com.silvager.raft.*;
 import io.papermc.paper.event.player.AsyncChatEvent;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -32,13 +29,8 @@ public class WishEvent implements Listener {
         return instance;
     }
     public static void wishEvent() {
-        List<Player> players = new ArrayList<>(Bukkit.getOnlinePlayers());
-        Player player;
-        if (players.size() > 1) {
-            player = players.get(Raft.random.nextInt(players.size()));
-        } else {
-            player = players.getFirst();
-        }
+        Player player = Utils.getRandomPlayerOrNull();
+        if (player == null) return;
 
         RaftMusic.playSong(RaftSongs.UPONRAINBOW, player);
 
