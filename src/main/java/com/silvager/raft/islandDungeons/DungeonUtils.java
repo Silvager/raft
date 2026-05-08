@@ -1,6 +1,7 @@
 package com.silvager.raft.islandDungeons;
 
 import com.silvager.raft.Raft;
+import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.WorldCreator;
 
@@ -14,11 +15,12 @@ import java.util.zip.ZipInputStream;
 
 public class DungeonUtils {
     public static void loadDungeonWorld() {
-        Path serverRoot = Raft.getInstance().getServer().getWorldContainer().toPath();
-        Path worldDestination = serverRoot.resolve("dungeonWorld");
+        Path worldRoot = Raft.getInstance().getServer().getLevelDirectory().resolve("dimensions/minecraft");
+//        Path serverRoot = Bukkit.getServer().getWorldContainer().toPath();
+        Path worldDestination = worldRoot.resolve("dungeonWorld");
         if (!Files.exists(worldDestination)) {
             try {
-                extractZip("worlds/dungeonWorld.zip", serverRoot);
+                extractZip("worlds/dungeonWorld.zip", worldDestination);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
