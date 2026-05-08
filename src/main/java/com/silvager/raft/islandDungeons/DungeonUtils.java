@@ -17,20 +17,21 @@ public class DungeonUtils {
     public static void loadDungeonWorld() {
         Path worldRoot = Raft.getInstance().getServer().getLevelDirectory().resolve("dimensions/minecraft");
 //        Path serverRoot = Bukkit.getServer().getWorldContainer().toPath();
-        Path worldDestination = worldRoot.resolve("dungeonWorld");
+        Path worldDestination = worldRoot.resolve("dungeonworld");
         if (!Files.exists(worldDestination)) {
             try {
-                extractZip("worlds/dungeonWorld.zip", worldDestination);
+                extractZip("worlds/dungeonworld.zip", worldRoot);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
         }
-        WorldCreator creator = new WorldCreator("dungeonWorld");
-        World world = creator.createWorld();
-        world.setAutoSave(false);
-        world.setViewDistance(4);
-        world.setSimulationDistance(4);
-        world.setSpawnFlags(false, false);
+        WorldCreator creator = new WorldCreator("dungeonworld");
+        World world = Bukkit.createWorld(creator);
+        if (world != null) {
+            world.setViewDistance(4);
+            world.setSimulationDistance(4);
+            world.setSpawnFlags(false, false);
+        }
     }
 
     private static void extractZip(String resourceName, Path destDir) throws IOException {
