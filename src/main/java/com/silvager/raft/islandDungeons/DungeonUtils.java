@@ -2,6 +2,7 @@ package com.silvager.raft.islandDungeons;
 
 import com.silvager.raft.Raft;
 import org.bukkit.Bukkit;
+import org.bukkit.NamespacedKey;
 import org.bukkit.World;
 import org.bukkit.WorldCreator;
 
@@ -25,7 +26,8 @@ public class DungeonUtils {
                 throw new RuntimeException(e);
             }
         }
-        WorldCreator creator = new WorldCreator("dungeonworld");
+
+        WorldCreator creator = new WorldCreator(NamespacedKey.minecraft("dungeonworld"));
         World world = Bukkit.createWorld(creator);
         if (world != null) {
             world.setViewDistance(4);

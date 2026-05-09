@@ -1,4 +1,4 @@
-package com.silvager.raft;
+package com.silvager.raft.worldGenerators;
 
 import org.bukkit.Material;
 import org.bukkit.generator.ChunkGenerator;
