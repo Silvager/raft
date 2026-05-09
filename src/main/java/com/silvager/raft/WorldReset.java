@@ -14,7 +14,7 @@ import java.util.Comparator;
 public class WorldReset {
     public static void resetWorld() {
         GameManager.stopSystems();
-        Collection<Player> players = (Collection<Player>) Raft.getInstance().getServer().getOnlinePlayers();
+        Collection<? extends Player> players = Bukkit.getOnlinePlayers();
         players.forEach((player -> {
             player.getInventory().clear();
             player.kick(Component.text("Raft is resetting- rejoin shortly"));
@@ -29,8 +29,7 @@ public class WorldReset {
         // Re-get the pdc of the new world
         PlayerJoining.setupPlayerJoining();
     }
-    public static void deleteWorld(World world) {
-        File path = world.getWorldFolder();
+    public static void deleteWorld(File path) {
         try {
             Files.walk(path.toPath())
                     .sorted(Comparator.reverseOrder()) // delete files before directories
@@ -45,4 +44,9 @@ public class WorldReset {
             Bukkit.getLogger().severe("Error walking world directory: " + e.getMessage());
         }
     }
+
+    public static void deleteWorld(World world) {
+        WorldReset.deleteWorld(world.getWorldFolder());
+    }
+
 }

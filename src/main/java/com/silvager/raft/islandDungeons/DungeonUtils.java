@@ -1,6 +1,7 @@
 package com.silvager.raft.islandDungeons;
 
 import com.silvager.raft.Raft;
+import com.silvager.raft.WorldReset;
 import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
 import org.bukkit.World;
@@ -15,16 +16,17 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
 public class DungeonUtils {
-    public static void loadDungeonWorld() {
+    public static void loadResetDungeonWorld() {
         Path worldRoot = Raft.getInstance().getServer().getLevelDirectory().resolve("dimensions/minecraft");
 //        Path serverRoot = Bukkit.getServer().getWorldContainer().toPath();
         Path worldDestination = worldRoot.resolve("dungeonworld");
-        if (!Files.exists(worldDestination)) {
-            try {
-                extractZip("worlds/dungeonworld.zip", worldRoot);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
+        if (Files.exists(worldDestination)) {
+            WorldReset.deleteWorld(worldDestination.toFile());
+        }
+        try {
+            extractZip("worlds/dungeonworld.zip", worldRoot);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
 
         WorldCreator creator = new WorldCreator(NamespacedKey.minecraft("dungeonworld"));

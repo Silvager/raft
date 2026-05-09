@@ -44,7 +44,7 @@ public class BubbleEvent {
         bubblePlayer.setRiptiding(false);
         Location glassLocation = bubblePlayer.getLocation();
         glassLocation.setRotation(45f, 0f);
-        innerGlass = raftWorld.spawn(glassLocation, BlockDisplay.class);
+        innerGlass = bubblePlayer.getWorld().spawn(glassLocation, BlockDisplay.class);
         innerGlass.setBlock(Material.GLASS.createBlockData());
         innerGlass.setTransformation(new Transformation(
                 new Vector3f(1.5f, 2.5f, 1.5f), // no translation
@@ -52,7 +52,7 @@ public class BubbleEvent {
                 new Vector3f(-3, -3, -3), // scale up by a factor of 3 (inside out)
                 new AxisAngle4f() // no right rotation
         ));
-        outerGlass = raftWorld.spawn(glassLocation, BlockDisplay.class);
+        outerGlass = bubblePlayer.getWorld().spawn(glassLocation, BlockDisplay.class);
         outerGlass.setBlock(Material.GLASS.createBlockData());
         outerGlass.setTransformation(new Transformation(
                 new Vector3f(-1.5f, -0.5f, -1.5f), // no translation

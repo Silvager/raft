@@ -4,7 +4,6 @@ import com.silvager.raft.GameManager;
 import com.silvager.raft.Raft;
 import com.silvager.raft.Utils;
 import com.silvager.raft.WorldReset;
-import jdk.jshell.execution.Util;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickEvent;
@@ -13,12 +12,9 @@ import net.kyori.adventure.text.format.TextDecoration;
 import net.kyori.adventure.title.Title;
 import org.bukkit.*;
 import org.bukkit.Sound;
-import org.bukkit.damage.DamageSource;
 import org.bukkit.entity.Boat;
 import org.bukkit.entity.EntityType;
-import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
-import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.joml.Vector3i;
@@ -53,7 +49,7 @@ public class DungeonEvent {
         if (dungeonWorld != null) {
             WorldReset.deleteWorld(dungeonWorld);
         }
-        DungeonUtils.loadDungeonWorld();
+        DungeonUtils.loadResetDungeonWorld();
     }
 
     public static void runDungeonEvent() {
@@ -74,8 +70,7 @@ public class DungeonEvent {
                 });
             }
             Bukkit.unloadWorld(dungeonWorld, false);
-            WorldReset.deleteWorld(dungeonWorld);
-            DungeonUtils.loadDungeonWorld();
+            DungeonUtils.loadResetDungeonWorld();
             spawnsLeftToVisit.addAll(Arrays.asList(dungeonSpawns));
             dungeonWorld = Raft.getInstance().getServer().getWorld("dungeonworld");
         }
@@ -126,9 +121,10 @@ public class DungeonEvent {
                 return;
             }
             finalDungeonWorld.getPlayers().forEach(player -> {
-                player.sendMessage(Component.text("The boat will leave to return to the main raft before the raft has drifted too far away.\n" +
-                        "Make sure you are in the boat at that time or you will be left behind (warning will be given)").color(NamedTextColor.RED));
-                player.sendMessage(Component.text(expeditionTime/20));
+                player.sendMessage(Component.text("Boat will return to main raft before it has drifted too far away").color(NamedTextColor.DARK_RED));
+                player.sendMessage(Component.text(
+                        "Be in boat before then or be stranded").color(NamedTextColor.RED));
+                player.sendMessage(Component.text("(warning will be given)").color(NamedTextColor.RED).decorate(TextDecoration.ITALIC));
                 player.playNote(player.getLocation(), Instrument.BELL, Note.natural(1, Note.Tone.G));
             });
             // Start water damage in dungeon world
@@ -158,7 +154,7 @@ public class DungeonEvent {
         }
         Utils.runLater(() -> {
             dungeonWorld.getPlayers().forEach(player -> {
-                player.sendMessage(Component.text("10 seconds until boat leaves").color(NamedTextColor.DARK_RED));
+                player.sendMessage(Component.text("10 seconds until boat leaves").color(NamedTextColor.DARK_RED).decorate(TextDecoration.BOLD));
                 player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_SPLASH, 1f, 0.8f);
             });
         }, expeditionTime - (20*10L));
