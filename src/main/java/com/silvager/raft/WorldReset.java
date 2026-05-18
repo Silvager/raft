@@ -25,15 +25,21 @@ public class WorldReset {
             player.kick(Component.text("Raft is resetting- rejoin shortly"));
         }));
         Utils.runLater(() -> {
-            Bukkit.unloadWorld(GameManager.raftWorld, false);
-            Bukkit.unloadWorld(GameManager.raftEndWorld, false);
+            boolean raftWorldUnloaded = Bukkit.unloadWorld(GameManager.raftWorld, false);
+            boolean endWorldUnloaded = Bukkit.unloadWorld(GameManager.raftEndWorld, false);
+            if (!raftWorldUnloaded || !endWorldUnloaded) {
+                Utils.logInfo("FAILED TO DELETE WORLDS");
+            }
             GameManager.raftWorld = null;
             GameManager.raftEndWorld = null;
-        }, 1);
+        }, 5);
         // Run later to give time for world unloading
         Utils.runLater(() -> {
             deleteWorld(raftWorldFolder);
             deleteWorld(raftEndWorldFolder);
+            if (raftWorldFolder.exists() || raftEndWorldFolder.exists()) {
+                Utils.logInfo("FAILED TO DELETE WORLD FOLDERS");
+            }
         }, 10);
         Utils.runLater(() -> {
             GameManager.setupWorlds();
@@ -43,6 +49,7 @@ public class WorldReset {
             PlayerJoining.resetListOfFishingRodRecievers();
         }, 15);
     }
+
     public static void deleteWorld(File path) {
         try {
             Files.walk(path.toPath())

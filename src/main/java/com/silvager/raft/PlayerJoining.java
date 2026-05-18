@@ -29,16 +29,23 @@ public class PlayerJoining implements Listener {
         Player player = event.getPlayer();
         if (GameManager.raftWorld == null) {
             player.kick(Component.text("Raft is setting up- wait a sec"));
+            return;
         }
 
-        List<String> prevPlayerNames = pdc.get(key, PersistentDataType.LIST.strings());
+        List<String> prevPlayerNames = new ArrayList<>();
+        List<String> pdcValue = pdc.get(key, PersistentDataType.LIST.strings());
+        if (pdcValue != null) {
+            prevPlayerNames.addAll(pdcValue);
+        }
         // IF its the first player on a brand new world, or they are not listed, clear them and give rod
-        if (prevPlayerNames == null || !prevPlayerNames.contains(player.getName())) {
+        if (prevPlayerNames.isEmpty() || !prevPlayerNames.contains(player.getName())) {
             player.getInventory().clear();
             player.give(new ItemStack(Material.FISHING_ROD));
             // Add them to the list so they will not be cleared if they join again unless raft is reset
-            if (prevPlayerNames == null) {
-                pdc.set(key, PersistentDataType.LIST.strings(), List.of(player.getName()));
+            if (prevPlayerNames.isEmpty()) {
+                List<String> newList = new ArrayList<>();
+                newList.add(player.getName());
+                pdc.set(key, PersistentDataType.LIST.strings(), newList);
             } else {
                 prevPlayerNames.add(player.getName());
                 pdc.set(key, PersistentDataType.LIST.strings(), prevPlayerNames);
