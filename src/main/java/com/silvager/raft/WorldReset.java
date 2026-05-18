@@ -15,6 +15,8 @@ import java.util.Comparator;
 public class WorldReset {
     public static void resetWorld() {
         GameManager.stopSystems();
+        RaftEvents.cancelEventItteratorIfRunning();
+
         Collection<? extends Player> players = Bukkit.getOnlinePlayers();
         File raftWorldFolder =GameManager.raftWorld.getWorldFolder();
         File raftEndWorldFolder =GameManager.raftEndWorld.getWorldFolder();

@@ -2,6 +2,7 @@ package com.silvager.raft;
 
 import com.silvager.raft.events.*;
 import com.silvager.raft.islandDungeons.DungeonEvent;
+import org.bukkit.scheduler.BukkitTask;
 
 import java.util.*;
 
@@ -12,6 +13,8 @@ public class RaftEvents {
     private static long maxDelay = 20*80L;
     private static final HashMap<String, Runnable> eventsMap = new HashMap<>();
     private static final HashMap<String, Runnable> eventsAllowed = new HashMap<>();
+
+    private static BukkitTask eventItterator;
     // If runAllThenRepeat is false, it will never get emptied
     private static final ArrayList<Runnable> eventsLeftToRun = new ArrayList<>();
     public static void initializeEvents() {
@@ -81,6 +84,13 @@ public class RaftEvents {
         }
 
         long nextEventDelay = Raft.random.nextLong(minDelay, maxDelay);
-        Raft.scheduler.runTaskLater(Raft.getInstance(), RaftEvents::eventsIterator, nextEventDelay);
+        eventItterator = Raft.scheduler.runTaskLater(Raft.getInstance(), RaftEvents::eventsIterator, nextEventDelay);
+    }
+    public static void cancelEventItteratorIfRunning() {
+        if (eventItterator != null) {
+            if (!eventItterator.isCancelled()) {
+                eventItterator.cancel();
+            }
+        }
     }
 }
