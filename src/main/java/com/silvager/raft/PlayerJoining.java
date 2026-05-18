@@ -5,6 +5,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
+import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -15,6 +16,7 @@ import org.bukkit.persistence.PersistentDataType;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class PlayerJoining implements Listener {
     private static PersistentDataContainer pdc;
@@ -41,6 +43,10 @@ public class PlayerJoining implements Listener {
         if (prevPlayerNames.isEmpty() || !prevPlayerNames.contains(player.getName())) {
             player.getInventory().clear();
             player.give(new ItemStack(Material.FISHING_ROD));
+            player.setHealth(Objects.requireNonNull(player.getAttribute(Attribute.MAX_HEALTH)).getBaseValue());
+            player.setFoodLevel(20);
+            player.setSaturation(20f);
+
             // Add them to the list so they will not be cleared if they join again unless raft is reset
             if (prevPlayerNames.isEmpty()) {
                 List<String> newList = new ArrayList<>();

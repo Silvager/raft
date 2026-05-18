@@ -98,7 +98,8 @@ public class MiniEvents {
         Villager villager = raftWorld.spawn(spawnLocation, Villager.class);
         chestBoat.addPassenger(villager);
         villager.setProfession(Villager.Profession.FISHERMAN);
-        String playerName = raftWorld.getPlayers().get(Raft.random.nextInt(raftWorld.getPlayerCount())).getName();
+        Player randomPlayer = Utils.getRandomPlayerOrNull();
+        String playerName =  randomPlayer == null ? "Sussy Backa" : randomPlayer.getName();
         villager.customName(Component.text(playerName+"'s Cousin").color(NamedTextColor.BLUE));
     }
     private static final String[] messages = {"Click here for FREE robux!",
