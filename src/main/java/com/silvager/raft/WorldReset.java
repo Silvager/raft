@@ -2,6 +2,7 @@ package com.silvager.raft;
 
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 
@@ -15,19 +16,32 @@ public class WorldReset {
     public static void resetWorld() {
         GameManager.stopSystems();
         Collection<? extends Player> players = Bukkit.getOnlinePlayers();
+        File raftWorldFolder =GameManager.raftWorld.getWorldFolder();
+        File raftEndWorldFolder =GameManager.raftEndWorld.getWorldFolder();
         players.forEach((player -> {
+            player.setGameMode(GameMode.SPECTATOR);
+            player.teleportAsync(GameManager.oceanSpawn);
             player.getInventory().clear();
             player.kick(Component.text("Raft is resetting- rejoin shortly"));
         }));
-
-        Bukkit.unloadWorld(GameManager.raftWorld, false);
-        Bukkit.unloadWorld(GameManager.raftEndWorld, false);
-        deleteWorld(GameManager.raftWorld);
-        deleteWorld(GameManager.raftEndWorld);
-
-        GameManager.setupWorlds();
-        // Re-get the pdc of the new world
-        PlayerJoining.setupPlayerJoining();
+        Utils.runLater(() -> {
+            Bukkit.unloadWorld(GameManager.raftWorld, false);
+            Bukkit.unloadWorld(GameManager.raftEndWorld, false);
+            GameManager.raftWorld = null;
+            GameManager.raftEndWorld = null;
+        }, 1);
+        // Run later to give time for world unloading
+        Utils.runLater(() -> {
+            deleteWorld(raftWorldFolder);
+            deleteWorld(raftEndWorldFolder);
+        }, 10);
+        Utils.runLater(() -> {
+            GameManager.setupWorlds();
+            // Re-get the pdc of the new world
+            PlayerJoining.setupPlayerJoining();
+            // Make it so people can get fishing rod again
+            PlayerJoining.resetListOfFishingRodRecievers();
+        }, 15);
     }
     public static void deleteWorld(File path) {
         try {

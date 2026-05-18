@@ -82,6 +82,8 @@ public class GameManager {
             wc.biomeProvider(new SingleBiomeProvidor(Biome.OCEAN));
             wc.environment(World.Environment.NORMAL);
             raftWorld = Bukkit.createWorld(wc);
+        } else {
+            raftWorld = foundWorld;
         }
 
         assert raftWorld != null;
@@ -108,6 +110,8 @@ public class GameManager {
             wc.environment(World.Environment.THE_END);
             raftEndWorld = Bukkit.createWorld(wc);
             EndFightStuff.setupEndCrystals();
+        } else {
+            raftEndWorld = foundEndWorld;
         }
         assert raftEndWorld != null;
         raftEndWorld.setAutoSave(true);

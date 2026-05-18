@@ -1,5 +1,7 @@
 package com.silvager.raft;
 
+import net.kyori.adventure.text.Component;
+import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -11,6 +13,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class PlayerJoining implements Listener {
@@ -24,6 +27,9 @@ public class PlayerJoining implements Listener {
     @EventHandler
     public static void onPlayerConnect(PlayerJoinEvent event) {
         Player player = event.getPlayer();
+        if (GameManager.raftWorld == null) {
+            player.kick(Component.text("Raft is setting up- wait a sec"));
+        }
 
         List<String> prevPlayerNames = pdc.get(key, PersistentDataType.LIST.strings());
         // IF its the first player on a brand new world, or they are not listed, clear them and give rod
@@ -40,10 +46,14 @@ public class PlayerJoining implements Listener {
         }
         
         if (GameManager.getIsRunning()) {
+            player.setGameMode(GameMode.SURVIVAL);
             player.teleportAsync(GameManager.oceanSpawn);
         } else {
             player.setGameMode(GameMode.SPECTATOR);
             player.teleportAsync(GameManager.oceanSpawn);
         }
+    }
+    public static void resetListOfFishingRodRecievers() {
+        pdc.set(key, PersistentDataType.LIST.strings(), new ArrayList<>());
     }
 }
