@@ -32,3 +32,4 @@ enable-event:
   shark: true
   circusPeanut: true
   bubble: true
+  purge: true

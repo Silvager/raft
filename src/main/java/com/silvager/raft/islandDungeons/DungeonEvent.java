@@ -79,6 +79,9 @@ public class DungeonEvent {
         Vector3i spawnPos = dungeonSpawn.spawnPosition();
         Location dungeonSpawnLocation = new Location(dungeonWorld, spawnPos.x, spawnPos.y, spawnPos.z);
 
+        //Set to day
+        dungeonWorld.setTime(6000);
+
 
         playersWaitingForExpedition.clear();
         //Notify people of starting

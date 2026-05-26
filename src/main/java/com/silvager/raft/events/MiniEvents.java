@@ -29,7 +29,7 @@ public class MiniEvents {
         if (raftWorld.getPlayerCount() == 0) return;
         Player player = GameManager.raftWorld.getPlayers().getFirst();
         final int dist = 15;
-        final int num = 10;
+        final int num = 5;
         for (int i=0; i<num; i++) {
             double radRot = ((double) i / (double) num) * Math.PI * 2;
             Location spawnLocation = new Location(GameManager.raftWorld, 6+Math.sin( radRot)*dist, 20, 7+Math.cos(radRot)*dist);

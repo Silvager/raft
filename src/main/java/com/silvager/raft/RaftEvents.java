@@ -48,6 +48,7 @@ public class RaftEvents {
         eventsMap.put("shark", SharkEvent::startSharkEvent);
         eventsMap.put("circusPeanut", MiniEvents::circusPeanutEvent);
         eventsMap.put("bubble", BubbleEvent::bubbleEvent);
+        eventsMap.put("purge", PurgeEvent::runPurgeEvent);
         eventsMap.forEach((name, runnable) -> {
             if (Raft.getInstance().getConfig().getBoolean("enable-event."+name)) {
                 eventsAllowed.put(name, runnable);
