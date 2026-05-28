@@ -45,11 +45,12 @@ public class DungeonEvent {
 
     public static void setupDungeonEvent() {
         spawnsLeftToVisit.addAll(Arrays.asList(dungeonSpawns));
-        World dungeonWorld = Raft.getInstance().getServer().getWorld("dungeonworld");
-        if (dungeonWorld != null) {
-            WorldReset.deleteWorld(dungeonWorld);
+        NamespacedKey dungeonWorldKey = new NamespacedKey("raft", "dungeonworld");
+        if (Utils.doesWorldExistOnDisk(dungeonWorldKey)) {
+            WorldReset.deleteWorld(Bukkit.getServer().getLevelDirectory().resolve("dimensions/raft/dungeonworld").toFile());
         }
         DungeonUtils.loadResetDungeonWorld();
+        DungeonEvent.dungeonWorld = Bukkit.getWorld(dungeonWorldKey);
     }
 
     public static void runDungeonEvent() {
@@ -60,7 +61,6 @@ public class DungeonEvent {
             return;
         }
         isDungeonRunning = true;
-        dungeonWorld = Raft.getInstance().getServer().getWorld("dungeonworld");
 
         //reset the world if all spawns were visited
         if (spawnsLeftToVisit.isEmpty()) {
@@ -72,7 +72,7 @@ public class DungeonEvent {
             Bukkit.unloadWorld(dungeonWorld, false);
             DungeonUtils.loadResetDungeonWorld();
             spawnsLeftToVisit.addAll(Arrays.asList(dungeonSpawns));
-            dungeonWorld = Raft.getInstance().getServer().getWorld("dungeonworld");
+            DungeonEvent.dungeonWorld = Bukkit.getWorld(new NamespacedKey("raft", "dungeonworld"));
         }
         // set up the spawn location
         DungeonSpawn dungeonSpawn = spawnsLeftToVisit.remove(Raft.random.nextInt(0, spawnsLeftToVisit.size()));

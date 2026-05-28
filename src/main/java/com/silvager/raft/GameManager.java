@@ -12,6 +12,7 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.Vector;
+import org.checkerframework.checker.units.qual.N;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -72,49 +73,54 @@ public class GameManager {
         }));
     }
     //Ran on server start
+    //The server runs it one tick later so worlds will actually be loaded
     static void setupWorlds() {
-        raftWorld = null;
-        // If there is a world currently saved, delete it
-        World foundWorld = Bukkit.getWorld("raftWorld");
-        if (foundWorld == null) {
-            WorldCreator wc = new WorldCreator("raftWorld");
-            wc.generator(new OceanWorldGen());
-            wc.biomeProvider(new SingleBiomeProvidor(Biome.OCEAN));
-            wc.environment(World.Environment.NORMAL);
-            raftWorld = Bukkit.createWorld(wc);
-        } else {
-            raftWorld = foundWorld;
-        }
-
+        NamespacedKey raftWorldKey = new NamespacedKey("raft", "raftworld");
+        raftWorld = Bukkit.getWorld(raftWorldKey);
+        WorldCreator wc = new WorldCreator(raftWorldKey);
+        wc.generator(new OceanWorldGen());
+        wc.biomeProvider(new SingleBiomeProvidor(Biome.OCEAN));
+        wc.environment(World.Environment.NORMAL);
+        raftWorld = Bukkit.createWorld(wc);
         assert raftWorld != null;
+
         raftWorld.setAutoSave(true);
-        raftWorld.setSpawnFlags(false ,false);
+        raftWorld.setGameRule(GameRules.SPAWN_MOBS, false);
+        raftWorld.setGameRule(GameRules.SPAWN_MONSTERS, false);
+        raftWorld.setGameRule(GameRules.SPAWN_PHANTOMS, false);
         raftWorld.setViewDistance(5);
         raftWorld.setSimulationDistance(5);
         raftWorld.setTime(1000L);
         oceanSpawn = new Location(raftWorld, 7.5, 32, 7.5);
         raftWorld.setSpawnLocation(oceanSpawn);
         raftWorld.setDifficulty(Difficulty.HARD);
-         WorldBorder worldBorder = raftWorld.getWorldBorder();
+        raftWorld.setStorm(false);
+        raftWorld.setThundering(false);
+        raftWorld.setClearWeatherDuration(20*20);
+        WorldBorder worldBorder = raftWorld.getWorldBorder();
         worldBorder.setCenter(oceanSpawn);
         worldBorder.setSize(120);
         worldBorder.setDamageAmount(2);
         worldBorder.setDamageBuffer(3);
 
-        raftEndWorld = null;
-        World foundEndWorld = Bukkit.getWorld("raftEndWorld");
-        if (foundEndWorld == null) {
-            WorldCreator wc = new WorldCreator("raftEndWorld");
-            wc.generator(new OceanEndGen());
-            wc.biomeProvider(new SingleBiomeProvidor(Biome.THE_END));
-            wc.environment(World.Environment.THE_END);
-            raftEndWorld = Bukkit.createWorld(wc);
-            EndFightStuff.setupEndCrystals();
-        } else {
-            raftEndWorld = foundEndWorld;
-        }
+
+        NamespacedKey raftEndWorldKey = new NamespacedKey("raft", "raftendworld");
+        boolean isEndWorldAlreadyCreated = Utils.doesWorldExistOnDisk(raftEndWorldKey);
+        raftEndWorld = Bukkit.getWorld(raftEndWorldKey);
+        WorldCreator wce = new WorldCreator(raftEndWorldKey);
+        wce.generator(new OceanEndGen());
+        wce.biomeProvider(new SingleBiomeProvidor(Biome.THE_END));
+        wce.environment(World.Environment.THE_END);
+        raftEndWorld = Bukkit.createWorld(wce);
         assert raftEndWorld != null;
         raftEndWorld.setAutoSave(true);
+        raftEndWorld.setGameRule(GameRules.SPAWN_PHANTOMS, false);
+
+        //This should only run if the world is being loaded/created for the first time
+        if (!isEndWorldAlreadyCreated) {
+            EndFightStuff.setupEndCrystals();
+        }
+
     }
 
     static void startCurrentSystem() {

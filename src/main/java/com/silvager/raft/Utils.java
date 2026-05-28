@@ -3,9 +3,11 @@ package com.silvager.raft;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.identity.Identity;
 import org.bukkit.Bukkit;
+import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitTask;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,5 +34,12 @@ public class Utils {
             player = players.getFirst();
         }
         return player;
+    }
+    public static boolean doesWorldExistOnDisk(NamespacedKey worldKey) {
+        if (Bukkit.getWorld(worldKey) != null) {
+            return true;
+        }
+        File worldFolder = new File(Bukkit.getServer().getLevelDirectory().resolve("dimensions").resolve(worldKey.getNamespace()).toFile(), worldKey.value());
+        return worldFolder.exists();
     }
 }

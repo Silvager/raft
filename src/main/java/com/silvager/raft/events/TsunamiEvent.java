@@ -16,10 +16,14 @@ public class TsunamiEvent {
     private static int currentX = -51;
     private static boolean isRunning = false;
     public static void startTsunamiEvent() {
+        cancelTsunamiIfRunning();
         currentX = -51;
         // Location spawnLocation = new Location(raftWorld, -51, 30, Raft.random.nextDouble(-51, 65));
         //x 58 is the max
         GameManager.raftWorld.setStorm(true);
+        GameManager.raftWorld.setWeatherDuration((int)WATER_DELAY * 88);
+        GameManager.raftWorld.setThundering(true);
+        GameManager.raftWorld.setThunderDuration((int)WATER_DELAY * 88);
         isRunning = true;
         Raft.scheduler.runTaskLater(Raft.getInstance(), TsunamiEvent::tsunamiItterate, 1L);
     }
@@ -28,6 +32,8 @@ public class TsunamiEvent {
             return;
         }
         isRunning = false;
+        GameManager.raftWorld.setStorm(false);
+        GameManager.raftWorld.setThundering(false);
         // Delete the whole tsunami
         for (int z=-52; z<66; z++) {
             for (int y=50; y>30; y--) {
@@ -43,6 +49,9 @@ public class TsunamiEvent {
 
     }
     private static void tsunamiItterate() {
+        if (!isRunning) {
+            return;
+        }
         if (currentX <= 58) {
             // Place water
             for (int z=-51; z<65; z++) {
@@ -68,10 +77,12 @@ public class TsunamiEvent {
         if (currentX != 68) {
             currentX++;
             Raft.scheduler.runTaskLater(Raft.getInstance(), TsunamiEvent::tsunamiItterate, WATER_DELAY);
-            GameManager.raftWorld.setStorm(false);
+
         }
 
         if (currentX == 68) {
+            GameManager.raftWorld.setStorm(false);
+            GameManager.raftWorld.setThundering(false);
             isRunning = false;
         }
 

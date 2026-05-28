@@ -17,7 +17,7 @@ import java.util.zip.ZipInputStream;
 
 public class DungeonUtils {
     public static void loadResetDungeonWorld() {
-        Path worldRoot = Raft.getInstance().getServer().getLevelDirectory().resolve("dimensions/minecraft");
+        Path worldRoot = Raft.getInstance().getServer().getLevelDirectory().resolve("dimensions/raft");
 //        Path serverRoot = Bukkit.getServer().getWorldContainer().toPath();
         Path worldDestination = worldRoot.resolve("dungeonworld");
         if (Files.exists(worldDestination)) {
@@ -29,7 +29,7 @@ public class DungeonUtils {
             throw new RuntimeException(e);
         }
 
-        WorldCreator creator = new WorldCreator(NamespacedKey.minecraft("dungeonworld"));
+        WorldCreator creator = new WorldCreator(new NamespacedKey("raft", "dungeonworld"));
         World world = Bukkit.createWorld(creator);
         if (world != null) {
             world.setViewDistance(4);

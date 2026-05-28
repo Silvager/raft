@@ -31,10 +31,12 @@ public final class Raft extends JavaPlugin {
         //Events need to be initialized before commands
         RaftEvents.initializeEvents();
         RaftCommands.registerCommands();
+
         GameManager.setupWorlds();
         PlayerJoining.setupPlayerJoining();
         DungeonEvent.setupDungeonEvent();
         Raft.registerListener(new PlayerJoining());
+
     }
     public static Raft getInstance() {
         return Raft.instance;
@@ -48,4 +50,5 @@ public final class Raft extends JavaPlugin {
             GameManager.stopSystems();
         }
     }
+
 }
