@@ -31,12 +31,9 @@ import java.time.Duration;
 import java.util.List;
 
 public class RaftListeners implements Listener {
-    @EventHandler
-    public static void onPlayerRespawn(PlayerRespawnEvent event) {
-        if (GameManager.oceanSpawn != null) {
-            event.setRespawnLocation(GameManager.oceanSpawn);
-        }
-    }
+
+    // The listener for player respawn is in PlayerJoining just in case someone manages to die before the game starts
+
     @EventHandler
     public static void onPlayerFish(PlayerFishEvent event) {
 

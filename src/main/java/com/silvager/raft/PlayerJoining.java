@@ -10,6 +10,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
@@ -25,6 +26,13 @@ public class PlayerJoining implements Listener {
     public static void setupPlayerJoining() {
         pdc = GameManager.raftWorld.getPersistentDataContainer();
 
+    }
+    // The respawn is here just in case someone manages to die before the game starts
+    @EventHandler
+    public static void onPlayerRespawn(PlayerRespawnEvent event) {
+        if (GameManager.oceanSpawn != null) {
+            event.setRespawnLocation(GameManager.oceanSpawn);
+        }
     }
     @EventHandler
     public static void onPlayerConnect(PlayerJoinEvent event) {

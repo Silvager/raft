@@ -168,7 +168,7 @@ public class DungeonEvent {
                 });
                 dungeonWorld.getPlayers().forEach(player -> {
                     // If player on boat, send back
-                    if (player.getLocation().distance(dungeonSpawnLocation) < 3) {
+                    if (player.getLocation().distance(dungeonSpawnLocation) < 6) {
                         player.teleportAsync(GameManager.oceanSpawn);
                     } else {
                         player.playSound(player.getLocation(), Sound.ENTITY_ENDER_DRAGON_DEATH, 2f, 1f);

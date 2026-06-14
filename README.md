@@ -14,6 +14,7 @@ However, that same current can mean your doom so don't fall in!
 - Once in the game, run `/raft start` to begin! (op needed) If you stop the server and then restart it, you will need to run `/raft start` again but the world and player inventories will be saved
 - You can use `/raft event` to manually trigger an event
 - You can use `/raft resetWorld` to fully reset the game and player inventories
+- You can change game settings in the plugin's `config.yml`
 ## Notes
 Raft is meant to be a standalone experience and not part of a larger server.
 

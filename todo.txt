@@ -11,7 +11,6 @@ Event ideas:
 - Tower of circus peanuts go down
 - Bubble player floats in
 TO FIX UP:
-- Practice timed dungeon so each dungeon has its own time
 
 BUGS:
 - People spawn in the main world not raft world, even if game is already running (sometimes?)
