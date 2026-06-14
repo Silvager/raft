@@ -1,5 +1,5 @@
 # Raft
-Raft is a Minecraft paper plugin that adds a minigame survival experience loosely based on the video game Raft
+Raft is a Minecraft paper plugin that adds a minigame survival experience inspired by the video game Raft
 ## Gameplay
 - You start on a raft in the middle of the ocean, gathering supplies that the current brings you to survive.
 However, that same current can mean your doom so don't fall in!
