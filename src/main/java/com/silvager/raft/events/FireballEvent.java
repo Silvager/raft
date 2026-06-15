@@ -1,8 +1,11 @@
 package com.silvager.raft.events;
 
 import com.silvager.raft.GameManager;
+import com.silvager.raft.PlayerJoining;
 import com.silvager.raft.Raft;
+import com.silvager.raft.Utils;
 import org.bukkit.Location;
+import org.bukkit.Sound;
 import org.bukkit.World;
 import org.bukkit.entity.Fireball;
 import org.bukkit.entity.Player;
@@ -15,7 +18,8 @@ public class FireballEvent {
     private static int timesToRun = 10;
     public static void startFireballEvent() {
         if (GameManager.raftWorld.getPlayers().isEmpty()) return;
-        timesToRun = Raft.random.nextInt(3, 11);
+        timesRun = 0;
+        timesToRun = Raft.random.nextInt(2, 5);
         Raft.scheduler.runTaskLater(Raft.getInstance(), FireballEvent::fireballItterator, 20L);
     }
     private static void fireballItterator() {
@@ -24,7 +28,13 @@ public class FireballEvent {
         }
         World raftWorld = GameManager.raftWorld;
         List<Player> players = raftWorld.getPlayers();
-        Location spawn = players.get(Raft.random.nextInt(players.size())).getLocation().clone();
+        if (players.isEmpty()) {
+            return;
+        }
+        Player targetPlayer = players.get(Raft.random.nextInt(players.size()));
+        targetPlayer.playSound(targetPlayer.getLocation(), Sound.BLOCK_TRIAL_SPAWNER_SPAWN_MOB, 2f, 2f);
+
+        Location spawn = targetPlayer.getLocation().clone();
         spawn.setY(100);
         Fireball fireball = raftWorld.spawn(spawn, Fireball.class);
         fireball.setDirection(new Vector(0, -1, 0));

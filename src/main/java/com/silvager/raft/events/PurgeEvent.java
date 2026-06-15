@@ -2,6 +2,9 @@ package com.silvager.raft.events;
 
 import com.silvager.raft.GameManager;
 import com.silvager.raft.Utils;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.entity.Arrow;
@@ -22,13 +25,17 @@ public class PurgeEvent {
         List<Player> players = GameManager.raftWorld.getPlayers();
         players.forEach(player -> {
             player.playSound(player.getLocation(), Sound.ITEM_GOAT_HORN_SOUND_5, 4f, 1f);
+            player.sendMessage(Component.text("Purge incoming...").color(NamedTextColor.DARK_PURPLE).decorate(TextDecoration.ITALIC));
         });
         arrows = new ArrayList<>();
-        arrowPurgeItterator(1);
         Utils.runLater(() -> {
-            arrows.forEach(Arrow::remove);
-            arrows.clear();
-        }, 15*20);
+            arrowPurgeItterator(1);
+            Utils.runLater(() -> {
+                arrows.forEach(Arrow::remove);
+                arrows.clear();
+            }, 15*20);
+        }, 4*20);
+
     }
     private static void arrowPurgeItterator(int index) {
         List<LivingEntity> targets = GameManager.raftWorld.getLivingEntities();
